@@ -2,17 +2,21 @@ using System.Collections.Generic;
 using Nancy;
 using Nancy.ViewEngines.Razor;
 
-namespace Snippet
+namespace SnippetTool
 {
   public class HomeModule : NancyModule
   {
     public HomeModule()
     {
       Get["/"] = _ => {
-        return View["index.cshtml"]
+        List<Tag> allTags = Tag.GetAll();
+        return View["index.cshtml", allTags];
       };
 
-      Get[""]
+      
+
+
+
 
     }
   }
