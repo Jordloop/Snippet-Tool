@@ -19,6 +19,13 @@ namespace SnippetTool
       int result = EndUser.GetAll().Count;
       Assert.Equal(0, result);
     }
+    [Fact]
+    public void Equal_ReturnsTrue_True()
+    {
+      EndUser oneUser = new EndUser("Jerry", "password");
+      EndUser twoUser = new EndUser("Jerry", "password");
+      Assert.Equal(oneUser, twoUser);
+    }
     public void Dispose()
     {
       EndUser.DeleteAll();
