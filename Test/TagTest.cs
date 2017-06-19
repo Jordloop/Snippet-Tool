@@ -7,8 +7,7 @@ using System.Data.SqlClient;
 namespace SnippetTool
 {
   [Collection("SnippetTool")]
-  public class TagTest
-  // : IDisposable
+  public class TagTest : IDisposable
   {
     public TagTest()
     {
@@ -24,7 +23,6 @@ namespace SnippetTool
       Assert.Equal(0 ,actual);
     }
 
-
     [Fact]
     public void Equals_ObjectsAreTheSame_True()
     {
@@ -33,6 +31,11 @@ namespace SnippetTool
       Tag secondTag = new Tag("loop" );
       //Assert
       Assert.Equal(firstTag, secondTag );
+    }
+
+    public void Dispose()
+    {
+      Tag.DeleteAll();
     }
 
   }

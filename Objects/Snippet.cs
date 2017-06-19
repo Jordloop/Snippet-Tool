@@ -37,38 +37,39 @@ namespace SnippetTool
       }
     }
 
-    //GetAll()
-        public static List<Snippet> GetAll()
-        {
-          List<Snippet> allSnippets = new List<Snippet>{};
+//GetAll()
+    public static List<Snippet> GetAll()
+    {
+      List<Snippet> allSnippets = new List<Snippet>{};
 
-          SqlConnection conn = DB.Connection();
-          conn.Open();
+      SqlConnection conn = DB.Connection();
+      conn.Open();
 
-          SqlCommand cmd = new SqlCommand("SELECT * FROM snippet;", conn );
-          SqlDataReader rdr = cmd.ExecuteReader();
+      SqlCommand cmd = new SqlCommand("SELECT * FROM snippet;", conn );
+      SqlDataReader rdr = cmd.ExecuteReader();
 
-          while(rdr.Read())
-          {
-            int snippetId = rdr.GetInt32(0 );
-            string snippetDesctiption = rdr.GetString(1 );
-            string snippetText = rdr.GetString(2 );
-            DateTime snippetTimestamp = rdr.GetDateTime(3 );
+      while(rdr.Read())
+      {
+        int snippetId = rdr.GetInt32(0 );
+        string snippetDesctiption = rdr.GetString(1 );
+        string snippetText = rdr.GetString(2 );
+        DateTime snippetTimestamp = rdr.GetDateTime(3 );
 
-            Snippet newSnippet = new Snippet(snippetDesctiption, snippetText, snippetTimestamp, snippetId );
-            allSnippets.Add(newSnippet );
-          }
+        Snippet newSnippet = new Snippet(snippetDesctiption, snippetText, snippetTimestamp, snippetId );
+        allSnippets.Add(newSnippet );
+      }
 
-          if (rdr != null )
-          {
-            rdr.Close();
-          }
-          if (conn != null )
-          {
-            conn.Close();
-          }
-          return allSnippets;
-        }
+      if (rdr != null )
+      {
+        rdr.Close();
+      }
+      if (conn != null )
+      {
+        conn.Close();
+      }
+      return allSnippets;
+    }
 
+    
   }
 }

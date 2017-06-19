@@ -7,8 +7,7 @@ using System.Data.SqlClient;
 namespace SnippetTool
 {
   [Collection("SnippetTool")]
-  public class SnippetTest
-  // : IDisposable
+  public class SnippetTest : IDisposable
   {
     public SnippetTest()
     {
@@ -24,7 +23,6 @@ namespace SnippetTool
       Assert.Equal(0 ,actual);
     }
 
-
     [Fact]
     public void Equals_ObjectsAreTheSame_True()
     {
@@ -33,6 +31,11 @@ namespace SnippetTool
       Snippet secondSnippet = new Snippet("Some Code", "x = 'Foo'", new DateTime(2017, 6, 19, 12, 55, 00) );
       //Assert
       Assert.Equal(firstSnippet, secondSnippet );
+    }
+
+    public void Dispose()
+    {
+      Snippet.DeleteAll();
     }
 
   }
