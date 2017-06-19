@@ -63,6 +63,14 @@ namespace SnippetTool
       return allTags;
     }
 
+    public static void DeleteAll()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+      SqlCommand cmd = new SqlCommand("DELETE FROM tag", conn);
+      cmd.ExecuteNonQuery();
+      conn.Close();
+    }
 
   }
 }
