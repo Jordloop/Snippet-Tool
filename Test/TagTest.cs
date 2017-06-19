@@ -24,5 +24,16 @@ namespace SnippetTool
       Assert.Equal(0 ,actual);
     }
 
+
+    [Fact]
+    public void Equals_ObjectsAreTheSame_True()
+    {
+      //Arrange, Act
+      Tag firstTag = new Tag("loop" );
+      Tag secondTag = new Tag("loop" );
+      //Assert
+      Assert.Equal(firstTag, secondTag );
+    }
+
   }
 }

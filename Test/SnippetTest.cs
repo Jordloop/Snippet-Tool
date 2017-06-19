@@ -25,5 +25,15 @@ namespace SnippetTool
     }
 
 
+    [Fact]
+    public void Equals_ObjectsAreTheSame_True()
+    {
+      //Arrange, Act
+      Snippet firstSnippet = new Snippet("Some Code", "x = 'Foo'", new DateTime(2017, 6, 19, 12, 55, 00) );
+      Snippet secondSnippet = new Snippet("Some Code", "x = 'Foo'", new DateTime(2017, 6, 19, 12, 55, 00) );
+      //Assert
+      Assert.Equal(firstSnippet, secondSnippet );
+    }
+
   }
 }

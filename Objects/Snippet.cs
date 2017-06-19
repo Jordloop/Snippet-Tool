@@ -6,8 +6,8 @@ namespace SnippetTool
 {
   public class Snippet
   {
-    public string Text {get; set; }
     public string Description {get; set; }
+    public string Text {get; set; }
     public DateTime Time {get; set; }
     public int Id {get; set; }
 
