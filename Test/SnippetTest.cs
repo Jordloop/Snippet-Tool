@@ -58,9 +58,50 @@ namespace SnippetTool
       Assert.Equal(testSnippet, foundSnippet );
     }
 
+    [Fact]
+    public void AddTag_AddTagToOneSnippet_True()
+    {
+     //Arrange
+     Snippet testSnippet = new Snippet("Some Code", "x = 'Foo'", new DateTime(2017, 6, 19, 12, 55, 00) );
+     testSnippet.Save();
+
+     Tag firstTag = new Tag("loop" );
+     firstTag.Save();
+     Tag secondTag = new Tag("dowd" );
+     secondTag.Save();
+     //Act
+     testSnippet.AddTag(firstTag );
+     testSnippet.AddTag(secondTag );
+     List<Tag> result = testSnippet.GetTags();
+     List<Tag> testList = new List<Tag>{firstTag, secondTag };
+     //Assert
+     Assert.Equal(testList, result );
+    }
+
+    [Fact]
+    public void GetTags_ReturnsAllTagsFromOneSnippet_True()
+    {
+     //Arrange
+     Snippet testSnippet = new Snippet("Some Code", "x = 'Foo'", new DateTime(2017, 6, 19, 12, 55, 00) );
+     testSnippet.Save();
+     Tag firstTag = new Tag("loop" );
+     firstTag.Save();
+     Tag secondTag = new Tag("loop" );
+     secondTag.Save();
+     //Act
+     testSnippet.AddTag(firstTag );
+     testSnippet.AddTag(secondTag );
+     List<Tag> testTags = testSnippet.GetTags();
+     List<Tag> contolTags = new List<Tag>{firstTag, secondTag };
+     //Assert
+     Assert.Equal(contolTags, testTags );
+    }
+
+
     public void Dispose()
     {
       Snippet.DeleteAll();
+      Tag.DeleteAll();
     }
 
   }

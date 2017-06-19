@@ -142,7 +142,66 @@ namespace SnippetTool
       }
       return foundSnippet;
     }
-    
+
+    //----AddTag()
+    public void AddTag(Tag newTag)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("INSERT INTO join_snippet_tag(id_snippet, id_tag) VALUES (@SnippetId, @TagId)", conn );
+
+      SqlParameter TagIdParam = new SqlParameter("@TagId",newTag.Id);
+
+      cmd.Parameters.Add(TagIdParam );
+
+      SqlParameter SnippetIdParam = new SqlParameter("@SnippetId",this.Id);
+
+      cmd.Parameters.Add(SnippetIdParam );
+
+      cmd.ExecuteNonQuery();
+      if(conn != null )
+      {
+        conn.Close();
+      }
+    }
+
+    //----GetTags()
+    public List<Tag> GetTags()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT tag.* FROM snippet JOIN join_snippet_tag ON (snippet.id = join_snippet_tag.id_snippet) JOIN tag ON (tag.id = join_snippet_tag.id_tag) WHERE snippet.id = @SnippetId", conn );
+
+      SqlParameter SnippetIdParam = new SqlParameter("@SnippetId",this.Id.ToString());
+
+      cmd.Parameters.Add(SnippetIdParam);
+
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      List<Tag> tags = new List<Tag>{};
+
+      while(rdr.Read())
+      {
+        int tagId = rdr.GetInt32(0);
+        string tagText = rdr.GetString(1);
+
+        Tag newTag = new Tag(tagText, tagId);
+        tags.Add(newTag);
+      }
+
+      if(rdr != null)
+      {
+        rdr.Close();
+      }
+      if(conn != null)
+      {
+        conn.Close();
+      }
+      return tags;
+    }
+
 
     public static void DeleteAll()
     {

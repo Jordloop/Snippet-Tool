@@ -58,9 +58,51 @@ namespace SnippetTool
       Assert.Equal(testTag, foundTag );
     }
 
+    [Fact]
+    public void AddSnippet_AddSnippetToOneTag_True()
+    {
+     //Arrange
+     Tag testTag = new Tag("loop" );
+     testTag.Save();
+
+     Snippet firstSnippet = new Snippet("Some Code", "x = 'Foo'", new DateTime(2017, 6, 19, 12, 55, 00) );
+     firstSnippet.Save();
+     Snippet secondSnippet = new Snippet("Some Code", "x = 'Foo'", new DateTime(2017, 6, 19, 12, 55, 00) );
+     secondSnippet.Save();
+     //Act
+     testTag.AddSnippet(firstSnippet );
+     testTag.AddSnippet(secondSnippet );
+     List<Snippet> result = testTag.GetSnippets();
+     List<Snippet> testList = new List<Snippet>{firstSnippet, secondSnippet };
+     //Assert
+     Assert.Equal(testList, result );
+    }
+
+    [Fact]
+    public void GetSnippets_ReturnsAllSnippetsFromOneTag_True()
+    {
+     //Arrange
+     Tag testTag = new Tag("loop" );
+     testTag.Save();
+     Snippet firstSnippet = new Snippet("Some Code", "x = 'Foo'", new DateTime(2017, 6, 19, 12, 55, 00) );
+     firstSnippet.Save();
+     Snippet secondSnippet = new Snippet("Some Code", "x = 'Foo'", new DateTime(2017, 6, 19, 12, 55, 00) );
+     secondSnippet.Save();
+     //Act
+     testTag.AddSnippet(firstSnippet );
+     testTag.AddSnippet(secondSnippet );
+     List<Snippet> testSnippets = testTag.GetSnippets();
+     List<Snippet> contolSnippets = new List<Snippet>{firstSnippet, secondSnippet };
+     //Assert
+     Assert.Equal(contolSnippets, testSnippets );
+    }
+
+
     public void Dispose()
     {
       Tag.DeleteAll();
+      Snippet.DeleteAll();
+
     }
 
   }
