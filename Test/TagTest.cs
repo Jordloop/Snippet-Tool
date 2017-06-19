@@ -33,6 +33,19 @@ namespace SnippetTool
       Assert.Equal(firstTag, secondTag );
     }
 
+    [Fact]
+    public void Save_TagToDatabase_True()
+    {
+      //Arrange
+      Tag testTag = new Tag("loop" );
+      //Act
+      testTag.Save();
+      List<Tag> result = Tag.GetAll();
+      List<Tag> testList = new List<Tag>{testTag };
+      //Assert
+      Assert.Equal(testList, result );
+    }
+
     public void Dispose()
     {
       Tag.DeleteAll();

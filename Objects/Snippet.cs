@@ -70,6 +70,40 @@ namespace SnippetTool
       return allSnippets;
     }
 
+    //----Save()
+    public void Save()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("INSERT INTO snippet (description, text, time ) OUTPUT INSERTED.id VALUES (@SnippetDesctiption, @SnippetText, @SnippetTimestamp );", conn );
+
+      SqlParameter descriptionParameter = new SqlParameter("SnippetDesctiption", this.Description);
+
+      SqlParameter textParameter = new SqlParameter("@SnippetText", this.Text);
+
+      SqlParameter timestampParameter = new SqlParameter("@SnippetTimestamp", this.Time);
+
+      cmd.Parameters.Add(descriptionParameter);
+      cmd.Parameters.Add(textParameter);
+      cmd.Parameters.Add(timestampParameter);
+
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        this.Id = rdr.GetInt32(0 );
+      }
+      if(rdr != null )
+      {
+        rdr.Close();
+      }
+      if(conn != null )
+      {
+        conn.Close();
+      }
+    }
+
     public static void DeleteAll()
     {
       SqlConnection conn = DB.Connection();

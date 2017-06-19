@@ -33,6 +33,19 @@ namespace SnippetTool
       Assert.Equal(firstSnippet, secondSnippet );
     }
 
+    [Fact]
+    public void Save_SnippetToDatabase_True()
+    {
+      //Arrange
+      Snippet testSnippet = new Snippet("Some Code", "x = 'Foo'", new DateTime(2017, 6, 19, 12, 55, 00));
+      //Act
+      testSnippet.Save();
+      List<Snippet> result = Snippet.GetAll();
+      List<Snippet> testList = new List<Snippet>{testSnippet };
+      //Assert
+      Assert.Equal(testList, result );
+    }
+
     public void Dispose()
     {
       Snippet.DeleteAll();
