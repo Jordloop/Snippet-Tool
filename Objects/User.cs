@@ -17,11 +17,54 @@ namespace SnippetTool
       Password = password;
     }
 
+    public void AddSnippet(Snippet code)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+      SqlCommand cmd = new SqlCommand("INSERT INTO join_end_user_snippet (id_snippet, id_end_user) VALUES (@SnippetId, @UserId);", conn);
+      SqlParameter sId = new SqlParameter("@SnippetId", code.Id);
+      cmd.Parameters.Add(sId);
+      SqlParameter uId = new SqlParameter("@UserId", this.Id);
+      cmd.Parameters.Add(uId);
+      cmd.ExecuteNonQuery();
+      if(conn != null)
+      {
+        conn.Close();
+      }
+    }
+    public List<Snippet> GetSnippets()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+      SqlCommand cmd = new SqlCommand("SELECT snippet.* FROM end_user JOIN join_end_user_snippet ON (end_user.id = join_end_user_snippet.id_end_user) JOIN snippet ON (join_end_user_snippet.id_snippet = snippet.id) WHERE end_user.id = @UserId;", conn);
+      SqlParameter uId = new SqlParameter("@UserId", this.Id);
+      cmd.Parameters.Add(uId);
+      SqlDataReader rdr = cmd.ExecuteReader();
+      List<Snippet> allSnippets = new List<Snippet> {};
+      while(rdr.Read())
+      {
+        int snippetId = rdr.GetInt32(0);
+        string snippetDesc = rdr.GetString(1);
+        string snippetText = rdr.GetString(2);
+        DateTime snippetTime = rdr.GetDateTime(3);
+        Snippet foundSnippet = new Snippet(snippetDesc, snippetText, snippetTime, snippetId);
+        allSnippets.Add(foundSnippet);
+      }
+      if(rdr != null)
+      {
+        rdr.Close();
+      }
+      if(conn != null)
+      {
+        conn.Close();
+      }
+      return allSnippets;
+    }
     public void Delete()
     {
       SqlConnection conn = DB.Connection();
       conn.Open();
-      SqlCommand cmd = new SqlCommand("DELETE FROM end_user WHERE id = @UserId;", conn);
+      SqlCommand cmd = new SqlCommand("DELETE FROM end_user WHERE id = @UserId; DELETE FROM join_end_user_snippet WHERE id_end_user = @UserId;", conn);
       SqlParameter uId = new SqlParameter("@UserId", this.Id);
       cmd.Parameters.Add(uId);
       cmd.ExecuteNonQuery();

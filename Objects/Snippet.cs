@@ -36,6 +36,10 @@ namespace SnippetTool
         return (idEquality && textEquality && timeEquality && descriptionEquality  );
       }
     }
+    public override int GetHashCode()
+    {
+      return this.Description.GetHashCode();
+    }
 
 //GetAll()
     public static List<Snippet> GetAll()
@@ -115,4 +119,3 @@ namespace SnippetTool
 
   }
 }
-
