@@ -14,5 +14,7 @@ namespace SnippetTool
       DBConfiguration.ConnectionString = "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=snippet_tool_test;Integrated Security=SSPI;";
     }
 
+
+
   }
 }

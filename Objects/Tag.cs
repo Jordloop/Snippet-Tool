@@ -4,7 +4,7 @@ using System;
 
 namespace SnippetTool
 {
-  public class Venue
+  public class Tag
   {
 
 
