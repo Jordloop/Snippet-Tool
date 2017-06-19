@@ -104,6 +104,46 @@ namespace SnippetTool
       }
     }
 
+    //----Find()
+    public static Snippet Find(int id )
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT * FROM snippet WHERE id = @SnippetId;", conn );
+
+      SqlParameter SnippetIdParameter = new SqlParameter("@SnippetId", id.ToString());
+
+      cmd.Parameters.Add(SnippetIdParameter );
+
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      int foundSnippetId = 0;
+      string foundSnippetDescription = null;
+      string foundSnippetText = null;
+      DateTime foundSnippetTime = default(DateTime);
+
+      while(rdr.Read())
+      {
+        foundSnippetId = rdr.GetInt32(0 );
+        foundSnippetDescription = rdr.GetString(1 );
+        foundSnippetText = rdr.GetString(2 );
+        foundSnippetTime = rdr.GetDateTime(3 );
+      }
+      Snippet foundSnippet = new Snippet(foundSnippetDescription, foundSnippetText, foundSnippetTime, foundSnippetId );
+
+      if (rdr != null )
+      {
+        rdr.Close();
+      }
+      if (conn != null )
+      {
+        conn.Close();
+      }
+      return foundSnippet;
+    }
+    
+
     public static void DeleteAll()
     {
       SqlConnection conn = DB.Connection();

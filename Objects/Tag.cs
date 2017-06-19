@@ -93,6 +93,40 @@ namespace SnippetTool
       }
     }
 
+    public static Tag Find(int id )
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT * FROM tag WHERE id = @TagId;", conn );
+
+      SqlParameter tagIdParameter = new SqlParameter("@TagId", id.ToString());
+
+      cmd.Parameters.Add(tagIdParameter );
+
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      int foundTagId = 0;
+      string foundTagText = null;
+
+      while(rdr.Read())
+      {
+        foundTagId = rdr.GetInt32(0 );
+        foundTagText = rdr.GetString(1 );
+      }
+      Tag foundTag = new Tag(foundTagText, foundTagId );
+
+      if (rdr != null )
+      {
+        rdr.Close();
+      }
+      if (conn != null )
+      {
+        conn.Close();
+      }
+      return foundTag;
+    }
+
     public static void DeleteAll()
     {
       SqlConnection conn = DB.Connection();
