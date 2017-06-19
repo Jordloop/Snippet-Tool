@@ -7,14 +7,22 @@ using System.Data.SqlClient;
 namespace SnippetTool
 {
   [Collection("SnippetTool")]
-  public class SnippetTool : IDisposable
+  public class TagTest
+  // : IDisposable
   {
-    public SnippetToolTest()
+    public TagTest()
     {
       DBConfiguration.ConnectionString = "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=snippet_tool_test;Integrated Security=SSPI;";
     }
 
-
+    [Fact]
+    public void GetAll_DatabaseIsEmpty_True()
+    {
+      //Arrange, Act
+      int actual = Tag.GetAll().Count;
+      //Assert]
+      Assert.Equal(0 ,actual);
+    }
 
   }
 }

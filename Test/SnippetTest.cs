@@ -7,19 +7,21 @@ using System.Data.SqlClient;
 namespace SnippetTool
 {
   [Collection("SnippetTool")]
-  public class SnippetTool : IDisposable
+  public class SnippetTest
+  // : IDisposable
   {
-    public SnippetToolTest()
+    public SnippetTest()
     {
       DBConfiguration.ConnectionString = "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=snippet_tool_test;Integrated Security=SSPI;";
     }
 
+    [Fact]
     public void GetAll_DatabaseIsEmpty_True()
     {
       //Arrange, Act
-      int actucal = Snippet.GetAll().Count;
+      int actual = Snippet.GetAll().Count;
       //Assert]
-      Assert.Equal(0 ,atcual);
+      Assert.Equal(0 ,actual);
     }
 
 
