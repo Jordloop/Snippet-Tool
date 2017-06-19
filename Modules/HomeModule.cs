@@ -10,10 +10,16 @@ namespace SnippetTool
     {
       Get["/"] = _ => {
         List<Tag> allTags = Tag.GetAll();
-        return View["index.cshtml", allTags];
+        return View["tag_view.cshtml", allTags];
       };
 
-      
+
+
+
+
+
+
+
 
 
 
