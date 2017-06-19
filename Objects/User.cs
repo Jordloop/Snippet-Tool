@@ -17,6 +17,29 @@ namespace SnippetTool
       Password = password;
     }
 
+    public void Save()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+      SqlCommand cmd = new SqlCommand("INSERT INTO end_user (name, password) OUTPUT INSERTED.id VALUES (@UserName, @UserPassword);", conn);
+      SqlParameter uName = new SqlParameter("@UserName", this.Name);
+      cmd.Parameters.Add(uName);
+      SqlParameter uPassword = new SqlParameter("@UserPassword", this.Password);
+      cmd.Parameters.Add(uPassword);
+      SqlDataReader rdr = cmd.ExecuteReader();
+      while(rdr.Read())
+      {
+        this.Id = rdr.GetInt32(0);
+      }
+      if(rdr != null)
+      {
+        rdr.Close();
+      }
+      if(conn != null)
+      {
+        conn.Close();
+      }
+    }
     public static List<EndUser> GetAll()
     {
       SqlConnection conn = DB.Connection();
