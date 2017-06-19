@@ -46,6 +46,18 @@ namespace SnippetTool
       Assert.Equal(testList, result );
     }
 
+    [Fact]
+    public void Find_FindsSnippetInDatabase_True()
+    {
+      //Arrange
+      Snippet testSnippet = new Snippet("Some Code", "x = 'Foo'", new DateTime(2017, 6, 19, 12, 55, 00));
+      testSnippet.Save();
+      //Act
+      Snippet foundSnippet = Snippet.Find(testSnippet.Id );
+      //Assert
+      Assert.Equal(testSnippet, foundSnippet );
+    }
+
     public void Dispose()
     {
       Snippet.DeleteAll();

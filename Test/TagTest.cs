@@ -46,6 +46,18 @@ namespace SnippetTool
       Assert.Equal(testList, result );
     }
 
+    [Fact]
+    public void Find_FindsTagInDatabase_True()
+    {
+      //Arrange
+      Tag testTag = new Tag("loop");
+      testTag.Save();
+      //Act
+      Tag foundTag = Tag.Find(testTag.Id );
+      //Assert
+      Assert.Equal(testTag, foundTag );
+    }
+
     public void Dispose()
     {
       Tag.DeleteAll();
