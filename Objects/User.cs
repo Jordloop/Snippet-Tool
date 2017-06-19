@@ -19,7 +19,26 @@ namespace SnippetTool
 
     public void Update(string update)
     {
-      
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+      SqlCommand cmd = new SqlCommand("UPDATE end_user SET name = @NewName OUTPUT INSERTED.name WHERE id = @UserId;", conn);
+      SqlParameter uName = new SqlParameter("@NewName", update);
+      cmd.Parameters.Add(uName);
+      SqlParameter uId = new SqlParameter("@UserId", this.Id.ToString());
+      cmd.Parameters.Add(uId);
+      SqlDataReader rdr = cmd.ExecuteReader();
+      while(rdr.Read())
+      {
+        this.Name = rdr.GetString(0);
+      }
+      if(rdr != null)
+      {
+        rdr.Close();
+      }
+      if(conn != null)
+      {
+        conn.Close();
+      }
     }
     public static EndUser Find(int id)
     {
