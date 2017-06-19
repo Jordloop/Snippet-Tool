@@ -46,9 +46,79 @@ namespace SnippetTool
       Assert.Equal(testList, result );
     }
 
+    [Fact]
+    public void Find_FindsTagInDatabase_True()
+    {
+      //Arrange
+      Tag testTag = new Tag("loop");
+      testTag.Save();
+      //Act
+      Tag foundTag = Tag.Find(testTag.Id );
+      //Assert
+      Assert.Equal(testTag, foundTag );
+    }
+
+    [Fact]
+    public void AddSnippet_AddSnippetToOneTag_True()
+    {
+     //Arrange
+     Tag testTag = new Tag("loop" );
+     testTag.Save();
+
+     Snippet firstSnippet = new Snippet("Some Code", "x = 'Foo'", new DateTime(2017, 6, 19, 12, 55, 00) );
+     firstSnippet.Save();
+     Snippet secondSnippet = new Snippet("Some Code", "x = 'Foo'", new DateTime(2017, 6, 19, 12, 55, 00) );
+     secondSnippet.Save();
+     //Act
+     testTag.AddSnippet(firstSnippet );
+     testTag.AddSnippet(secondSnippet );
+     List<Snippet> result = testTag.GetSnippets();
+     List<Snippet> testList = new List<Snippet>{firstSnippet, secondSnippet };
+     //Assert
+     Assert.Equal(testList, result );
+    }
+
+    [Fact]
+    public void GetSnippets_ReturnsAllSnippetsFromOneTag_True()
+    {
+     //Arrange
+     Tag testTag = new Tag("loop" );
+     testTag.Save();
+     Snippet firstSnippet = new Snippet("Some Code", "x = 'Foo'", new DateTime(2017, 6, 19, 12, 55, 00) );
+     firstSnippet.Save();
+     Snippet secondSnippet = new Snippet("Some Code", "x = 'Foo'", new DateTime(2017, 6, 19, 12, 55, 00) );
+     secondSnippet.Save();
+     //Act
+     testTag.AddSnippet(firstSnippet );
+     testTag.AddSnippet(secondSnippet );
+     List<Snippet> testSnippets = testTag.GetSnippets();
+     List<Snippet> contolSnippets = new List<Snippet>{firstSnippet, secondSnippet };
+     //Assert
+     Assert.Equal(contolSnippets, testSnippets );
+    }
+
+    [Fact]
+    public void Delete_DeletesTagFromDatabase_True()
+    {
+      //Arrange
+      Tag testTag1 = new Tag("loop" );
+      testTag1.Save();
+      Tag testTag2 = new Tag("dowd" );
+      testTag2.Save();
+      //Act
+      testTag1.Delete();
+      List<Tag> resultTagList = Tag.GetAll();
+      List<Tag> testTagList = new List<Tag>{testTag2};
+      //Assert
+      Assert.Equal(testTagList, resultTagList );
+    }
+
+
     public void Dispose()
     {
       Tag.DeleteAll();
+      Snippet.DeleteAll();
+
     }
 
   }
