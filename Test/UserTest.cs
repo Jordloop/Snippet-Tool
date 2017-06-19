@@ -75,6 +75,35 @@ namespace SnippetTool
       List<EndUser> result = new List<EndUser> {anotherUser};
       Assert.Equal(result, allUsers);
     }
+    [Fact]
+    public void AddSnippet_AddsSnippetToUser_Object()
+    {
+      EndUser testUser = new EndUser("Jerry", "password");
+      testUser.Save();
+      Snippet testSnippet = new Snippet("Some Code", "x = 'Foo'", new DateTime(2017, 6, 19, 12, 55, 00));
+      testSnippet.Save();
+      Snippet anotherSnippet = new Snippet("More Code", "y = 'Bar'", new DateTime(2017, 1, 01, 11, 55, 00));
+      anotherSnippet.Save();
+      testUser.AddSnippet(testSnippet);
+      testUser.AddSnippet(anotherSnippet);
+      List<Snippet> allUserSnippets = testUser.GetSnippets();
+      List<Snippet> result = new List<Snippet> {testSnippet, anotherSnippet};
+      Assert.Equal(result, allUserSnippets);
+    }
+    [Fact]
+    public void GetSnippets_RetrievesUserSnippets_List()
+    {
+      EndUser testUser = new EndUser("Jerry", "password");
+      testUser.Save();
+      Snippet testSnippet = new Snippet("Some Code", "x = 'Foo'", new DateTime(2017, 6, 19, 12, 55, 00));
+      testSnippet.Save();
+      Snippet anotherSnippet = new Snippet("More Code", "y = 'Bar'", new DateTime(2017, 1, 01, 11, 55, 00));
+      anotherSnippet.Save();
+      testUser.AddSnippet(testSnippet);
+      List<Snippet> allUserSnippets = testUser.GetSnippets();
+      List<Snippet> result = new List<Snippet> {testSnippet};
+      Assert.Equal(result, allUserSnippets);
+    }
     public void Dispose()
     {
       EndUser.DeleteAll();

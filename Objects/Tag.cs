@@ -30,7 +30,10 @@ namespace SnippetTool
         return (idEquality && textEquality );
       }
     }
-
+    public override int GetHashCode()
+    {
+      return this.Text.GetHashCode();
+    }
 
     //GetAll()
     public static List<Tag> GetAll()
