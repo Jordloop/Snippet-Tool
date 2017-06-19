@@ -29,11 +29,19 @@ namespace SnippetTool
     [Fact]
     public void Save_SavesToDB_Object()
     {
-      EndUser newUser = new EndUser("Jerry", "password");
-      newUser.Save();
+      EndUser testUser = new EndUser("Jerry", "password");
+      testUser.Save();
       List<EndUser> allUsers = EndUser.GetAll();
-      List<EndUser> result = new List<EndUser> {newUser};
+      List<EndUser> result = new List<EndUser> {testUser};
       Assert.Equal(result, allUsers);
+    }
+    [Fact]
+    public void Find_FindsUserInDB()
+    {
+      EndUser testUser = new EndUser("Jerry", "password");
+      testUser.Save();
+      EndUser foundUser = EndUser.Find(testUser.Id);
+      Assert.Equal(foundUser, testUser);
     }
     public void Dispose()
     {

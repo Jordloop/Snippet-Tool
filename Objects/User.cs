@@ -17,6 +17,34 @@ namespace SnippetTool
       Password = password;
     }
 
+    public static EndUser Find(int id)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+      SqlCommand cmd = new SqlCommand("SELECT * FROM end_user WHERE id = @UserId;", conn);
+      SqlParameter uId = new SqlParameter("@UserId", id.ToString());
+      cmd.Parameters.Add(uId);
+      SqlDataReader rdr = cmd.ExecuteReader();
+      int foundId = 0;
+      string foundName = null;
+      string foundPassword = null;
+      while(rdr.Read())
+      {
+        foundId = rdr.GetInt32(0);
+        foundName = rdr.GetString(1);
+        foundPassword = rdr.GetString(2);
+      }
+      EndUser foundUser = new EndUser(foundName, foundPassword, foundId);
+      if(rdr != null)
+      {
+        rdr.Close();
+      }
+      if(conn != null)
+      {
+        conn.Close();
+      }
+      return foundUser;
+    }
     public void Save()
     {
       SqlConnection conn = DB.Connection();
