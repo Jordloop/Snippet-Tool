@@ -17,6 +17,19 @@ namespace SnippetTool
       Password = password;
     }
 
+    public void Delete()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+      SqlCommand cmd = new SqlCommand("DELETE FROM end_user WHERE id = @UserId;", conn);
+      SqlParameter uId = new SqlParameter("@UserId", this.Id);
+      cmd.Parameters.Add(uId);
+      cmd.ExecuteNonQuery();
+      if(conn != null)
+      {
+        conn.Close();
+      }
+    }
     public void Update(string update)
     {
       SqlConnection conn = DB.Connection();

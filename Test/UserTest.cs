@@ -53,6 +53,18 @@ namespace SnippetTool
       string result = testUser.Name;
       Assert.Equal(result, newName);
     }
+    [Fact]
+    public void Delete_DeletesUserFromDB_Object()
+    {
+      EndUser testUser = new EndUser("Jerry", "password");
+      testUser.Save();
+      EndUser anotherUser = new EndUser("Rachel", "12345");
+      anotherUser.Save();
+      testUser.Delete();
+      List<EndUser> allUsers = EndUser.GetAll();
+      List<EndUser> result = new List<EndUser> {anotherUser};
+      Assert.Equal(result, allUsers);
+    }
     public void Dispose()
     {
       EndUser.DeleteAll();
