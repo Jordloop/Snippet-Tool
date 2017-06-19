@@ -54,6 +54,16 @@ namespace SnippetTool
       Assert.Equal(result, newName);
     }
     [Fact]
+    public void UpdatePassword_UpdatesPasswordInDB_Object()
+    {
+      EndUser testUser = new EndUser("Jerry", "password");
+      testUser.Save();
+      string newPassword = "12345";
+      testUser.UpdatePassword(newPassword);
+      string result = testUser.Password;
+      Assert.Equal(result, newPassword);
+    }
+    [Fact]
     public void Delete_DeletesUserFromDB_Object()
     {
       EndUser testUser = new EndUser("Jerry", "password");

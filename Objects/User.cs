@@ -30,12 +30,12 @@ namespace SnippetTool
         conn.Close();
       }
     }
-    public void Update(string update)
+    public void Update(string newName)
     {
       SqlConnection conn = DB.Connection();
       conn.Open();
       SqlCommand cmd = new SqlCommand("UPDATE end_user SET name = @NewName OUTPUT INSERTED.name WHERE id = @UserId;", conn);
-      SqlParameter uName = new SqlParameter("@NewName", update);
+      SqlParameter uName = new SqlParameter("@NewName", newName);
       cmd.Parameters.Add(uName);
       SqlParameter uId = new SqlParameter("@UserId", this.Id.ToString());
       cmd.Parameters.Add(uId);
@@ -43,6 +43,29 @@ namespace SnippetTool
       while(rdr.Read())
       {
         this.Name = rdr.GetString(0);
+      }
+      if(rdr != null)
+      {
+        rdr.Close();
+      }
+      if(conn != null)
+      {
+        conn.Close();
+      }
+    }
+    public void UpdatePassword(string newPassword)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+      SqlCommand cmd = new SqlCommand("UPDATE end_user SET password = @NewPassword OUTPUT INSERTED.password WHERE id = @UserId;", conn);
+      SqlParameter uPassword = new SqlParameter("@NewPassword", newPassword);
+      cmd.Parameters.Add(uPassword);
+      SqlParameter uId = new SqlParameter("@UserId", this.Id);
+      cmd.Parameters.Add(uId);
+      SqlDataReader rdr = cmd.ExecuteReader();
+      while(rdr.Read())
+      {
+        this.Password = rdr.GetString(0);
       }
       if(rdr != null)
       {
