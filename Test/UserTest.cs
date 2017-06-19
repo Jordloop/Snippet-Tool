@@ -36,12 +36,22 @@ namespace SnippetTool
       Assert.Equal(result, allUsers);
     }
     [Fact]
-    public void Find_FindsUserInDB()
+    public void Find_FindsUserInDB_Object()
     {
       EndUser testUser = new EndUser("Jerry", "password");
       testUser.Save();
       EndUser foundUser = EndUser.Find(testUser.Id);
       Assert.Equal(foundUser, testUser);
+    }
+    [Fact]
+    public void Update_UpdatesUserInfoInDB_Object()
+    {
+      EndUser testUser = new EndUser("Jerry", "password");
+      testUser.Save();
+      string newName = "Gerry";
+      testUser.Update(newName);
+      string result = testUser.Name;
+      Assert.Equal(result, newName);
     }
     public void Dispose()
     {

@@ -17,6 +17,10 @@ namespace SnippetTool
       Password = password;
     }
 
+    public void Update(string update)
+    {
+      
+    }
     public static EndUser Find(int id)
     {
       SqlConnection conn = DB.Connection();
