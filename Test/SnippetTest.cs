@@ -97,6 +97,22 @@ namespace SnippetTool
      Assert.Equal(contolTags, testTags );
     }
 
+    [Fact]
+    public void Delete_DeletesSnippetFromDatabase_True()
+    {
+      //Arrange
+      Snippet testSnippet1 = new Snippet("Some Code", "x = 'Foo'", new DateTime(2017, 6, 19, 12, 55, 00));
+      testSnippet1.Save();
+      Snippet testSnippet2 = new Snippet("Other Code", "x = 'Zoo'", new DateTime(2017, 7, 19, 12, 55, 00) );
+      testSnippet2.Save();
+      //Act
+      testSnippet1.Delete();
+      List<Snippet> resultSnippetList = Snippet.GetAll();
+      List<Snippet> testSnippetList = new List<Snippet>{testSnippet2};
+      //Assert
+      Assert.Equal(testSnippetList, resultSnippetList );
+    }
+
 
     public void Dispose()
     {

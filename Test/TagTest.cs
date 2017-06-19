@@ -97,6 +97,22 @@ namespace SnippetTool
      Assert.Equal(contolSnippets, testSnippets );
     }
 
+    [Fact]
+    public void Delete_DeletesTagFromDatabase_True()
+    {
+      //Arrange
+      Tag testTag1 = new Tag("loop" );
+      testTag1.Save();
+      Tag testTag2 = new Tag("dowd" );
+      testTag2.Save();
+      //Act
+      testTag1.Delete();
+      List<Tag> resultTagList = Tag.GetAll();
+      List<Tag> testTagList = new List<Tag>{testTag2};
+      //Assert
+      Assert.Equal(testTagList, resultTagList );
+    }
+
 
     public void Dispose()
     {

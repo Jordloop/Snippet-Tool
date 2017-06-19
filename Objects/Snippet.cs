@@ -202,6 +202,25 @@ namespace SnippetTool
       return tags;
     }
 
+    //----Delete()
+    public void Delete()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("DELETE FROM snippet WHERE id = @SnippetId;", conn );
+
+      SqlParameter snippetIdParameter = new SqlParameter("@SnippetId", this.Id);
+
+      cmd.Parameters.Add(snippetIdParameter );
+      cmd.ExecuteNonQuery();
+
+      if(conn != null)
+      {
+        conn.Close();
+      }
+    }
+
 
     public static void DeleteAll()
     {
