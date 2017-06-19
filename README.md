@@ -67,3 +67,7 @@ If you have any issues or have questions, ideas, concerns, or contributions plea
 This software is licensed under the MIT license.
 
 Copyright (c) 2017 Andrew Glines, Epicodus# Code Snippet Database
+
+
+![alt text][views]
+[views]: img/ViewsFlowchart.PNG "Views Flowchart"
