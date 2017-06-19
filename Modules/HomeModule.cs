@@ -31,8 +31,23 @@ namespace SnippetTool
         return View["snippet_view", allSnippets];
       };
 
+      Get["/tag/{id}"] = parameters => {
+      };
 
+      Get["/snippet/{id}"] = parameters => {
+      };
 
+      Get["/tag/{id}/update"] = parameters => {
+      };
+
+      Get["/snippet/{id}/update"] = parameters => {
+      };
+
+      Get["/tag/{id}/delete"] = parameters => {
+      };
+
+      Get["/snippet/{id}/delete"] = parameters => {
+      };
 
 
     }
