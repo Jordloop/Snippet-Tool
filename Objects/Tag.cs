@@ -15,6 +15,21 @@ namespace SnippetTool
       Id = newId;
     }
 
+    public override bool Equals(System.Object otherTag )
+    {
+      if (!(otherTag is Tag ))
+      {
+        return false;
+      }
+      else
+      {
+        Tag newTag = (Tag) otherTag;
+        bool idEquality = (this.Id == newTag.Id);
+        bool textEquality = (this.Text == newTag.Text);
+
+        return (idEquality && textEquality );
+      }
+    }
 
 
     //GetAll()

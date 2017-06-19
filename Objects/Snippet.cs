@@ -19,6 +19,24 @@ namespace SnippetTool
       Id = newId;
     }
 
+    public override bool Equals(System.Object otherSnippet )
+    {
+      if (!(otherSnippet is Snippet ))
+      {
+        return false;
+      }
+      else
+      {
+        Snippet newSnippet = (Snippet) otherSnippet;
+        bool descriptionEquality = (this.Description == newSnippet.Description);
+        bool textEquality = (this.Text == newSnippet.Text);
+        bool timeEquality = (this.Time == newSnippet.Time);
+        bool idEquality = (this.Id == newSnippet.Id);
+
+        return (idEquality && textEquality && timeEquality && descriptionEquality  );
+      }
+    }
+
     //GetAll()
         public static List<Snippet> GetAll()
         {
