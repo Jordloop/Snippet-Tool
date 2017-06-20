@@ -1,3 +1,15 @@
 @{
   Layout="Shared/_Layout";
 }
+<form action="/snippet_create" method="post">
+  <label for="snippet-text">Code:</label>
+  <input name="snippet-text" type="text">
+  <label for="snippet-description">Description</label>
+  <input name="snippet-description" type="text">
+
+@* <input type="hidden" name="_method" value="PATCH"> *@
+
+  @* <label for="snippet-time">Time</label>
+  <input name="snippet-time" type="datetime"> *@
+  <button type="submit">Add snippet</button>
+</form>

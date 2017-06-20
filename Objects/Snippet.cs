@@ -74,11 +74,26 @@ namespace SnippetTool
       return allSnippets;
     }
 
+    public string ConvertSnippetText(string userInput)
+    {
+      // Console.WriteLine(userInput);
+      string userInputConverted = userInput.Replace("33", "44");
+      return userInputConverted;
+    }
+
     //----Save()
     public void Save()
     {
       SqlConnection conn = DB.Connection();
       conn.Open();
+
+// We need to save text data with @-symbol replaced with HTML-parseable text.
+// 1. create external method to convert @
+// 2. call method inside Save method
+// 3. test using dummy data
+// 4. find out which var rep's actual string of user entered text
+
+
 
       SqlCommand cmd = new SqlCommand("INSERT INTO snippet (description, text, time ) OUTPUT INSERTED.id VALUES (@SnippetDesctiption, @SnippetText, @SnippetTimestamp );", conn );
 
