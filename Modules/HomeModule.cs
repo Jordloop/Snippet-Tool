@@ -9,12 +9,6 @@ namespace SnippetTool
   {
     public HomeModule()
     {
-
-      Get["/"] = _ => {
-        List<Tag> allTags = Tag.GetAll();
-        return View["tag_view.cshtml", allTags];
-      };
-
       Get["/snippet/view"] = _ => {
         List<Snippet> allSnippets = Snippet.GetAll();
         return View["snippet_view.cshtml", allSnippets];
@@ -36,7 +30,7 @@ namespace SnippetTool
 
         Tag newTag = new Tag(Request.Form["tag-text"]);
         newTag.Save();
-        
+
         SelectedSnippet.AddTag(newTag);
         List<Tag> SnippetTags = SelectedSnippet.GetTags();
 
@@ -45,14 +39,27 @@ namespace SnippetTool
         return View["this_snippet.cshtml", model];
       };
 
-      // Post["/tag_new"] = _ => {
-      //   Tag newTag = new Tag Find((Request.Form["tag-text"]);
-      //   newTag.Save();
-      //   List<Tag> allTags = Tag.GetAll();
-      //   return View["tag_view.cshtml", allTags];
-      // };
-//-----------------------------
+      Get["/snippet/create"] = _ =>
+      {
+        return View["snippet_create.cshtml"];
+      };
+      //-----------------------------
 
+      Post["/snippet/create"] = _ => {
+        Snippet newSnippet = new Snippet(Request.Form["snippet-description"], Request.Form["snippet-text"], new DateTime(2000, 1, 1, 12, 00, 00));
+
+        string testText = newSnippet.Text;
+        string x = newSnippet.ConvertSnippetText(testText);
+        newSnippet.Text = x;
+        newSnippet.Save();
+        List<Snippet> allSnippets = Snippet.GetAll();
+        return View["snippet_view.cshtml", allSnippets];
+      };
+
+      Post["/snippet/delete"] = _ => {
+        Snippet.DeleteAll();
+        return View["user_login.cshtml"];
+      };
 
       //Adrian's Pseudo-routes for user login/create pages*****************************************************
       Get["/"] = _=>
@@ -92,23 +99,6 @@ namespace SnippetTool
 //         return View["tag_view.cshtml", allTags];
 //       };
 // //-----------------------------
-//       Get["/snippet_create"] = _ =>
-//       {
-//         return View["snippet_create.cshtml"];
-//       };
-// //-----------------------------
-//
-//       Post["/snippet_create"] = _ => {
-//         Snippet newSnippet = new Snippet(Request.Form["snippet-description"], Request.Form["snippet-text"], new DateTime(2000, 1, 1, 12, 00, 00));
-//
-//         string testText = newSnippet.Text;
-//         Console.WriteLine("testText is {0}", testText);
-//         string x = newSnippet.ConvertSnippetText(testText);
-//         newSnippet.Text = x;
-//         newSnippet.Save();
-//         List<Snippet> allSnippets = Snippet.GetAll();
-//         return View["snippet_view.cshtml", allSnippets];
-//       };
 //------------------------------
 
       // Get["/tag/{id}"] = parameters => {
