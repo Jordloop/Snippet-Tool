@@ -21,7 +21,7 @@ namespace SnippetTool
     {
       SqlConnection conn = DB.Connection();
       conn.Open();
-      SqlCommand cmd = new SqlCommand("INSERT INTO join_end_user_snippet (id_snippet, id_end_user) VALUES (@SnippetId, @UserId);", conn);
+      SqlCommand cmd = new SqlCommand("INSERT INTO join_end_users_snippets (id_snippet, id_end_user) VALUES (@SnippetId, @UserId);", conn);
       SqlParameter sId = new SqlParameter("@SnippetId", code.Id);
       cmd.Parameters.Add(sId);
       SqlParameter uId = new SqlParameter("@UserId", this.Id);
@@ -36,7 +36,7 @@ namespace SnippetTool
     {
       SqlConnection conn = DB.Connection();
       conn.Open();
-      SqlCommand cmd = new SqlCommand("SELECT snippet.* FROM end_user JOIN join_end_user_snippet ON (end_user.id = join_end_user_snippet.id_end_user) JOIN snippet ON (join_end_user_snippet.id_snippet = snippet.id) WHERE end_user.id = @UserId;", conn);
+      SqlCommand cmd = new SqlCommand("SELECT snippets.* FROM end_users JOIN join_end_users_snippets ON (end_users.id = join_end_users_snippets.id_end_user) JOIN snippets ON (join_end_users_snippets.id_snippet = snippets.id) WHERE end_users.id = @UserId;", conn);
       SqlParameter uId = new SqlParameter("@UserId", this.Id);
       cmd.Parameters.Add(uId);
       SqlDataReader rdr = cmd.ExecuteReader();
@@ -64,7 +64,7 @@ namespace SnippetTool
     {
       SqlConnection conn = DB.Connection();
       conn.Open();
-      SqlCommand cmd = new SqlCommand("DELETE FROM end_user WHERE id = @UserId; DELETE FROM join_end_user_snippet WHERE id_end_user = @UserId;", conn);
+      SqlCommand cmd = new SqlCommand("DELETE FROM end_users WHERE id = @UserId; DELETE FROM join_end_users_snippets WHERE id_end_user = @UserId;", conn);
       SqlParameter uId = new SqlParameter("@UserId", this.Id);
       cmd.Parameters.Add(uId);
       cmd.ExecuteNonQuery();
@@ -77,7 +77,7 @@ namespace SnippetTool
     {
       SqlConnection conn = DB.Connection();
       conn.Open();
-      SqlCommand cmd = new SqlCommand("UPDATE end_user SET name = @NewName OUTPUT INSERTED.name WHERE id = @UserId;", conn);
+      SqlCommand cmd = new SqlCommand("UPDATE end_users SET name = @NewName OUTPUT INSERTED.name WHERE id = @UserId;", conn);
       SqlParameter uName = new SqlParameter("@NewName", newName);
       cmd.Parameters.Add(uName);
       SqlParameter uId = new SqlParameter("@UserId", this.Id.ToString());
@@ -100,7 +100,7 @@ namespace SnippetTool
     {
       SqlConnection conn = DB.Connection();
       conn.Open();
-      SqlCommand cmd = new SqlCommand("UPDATE end_user SET password = @NewPassword OUTPUT INSERTED.password WHERE id = @UserId;", conn);
+      SqlCommand cmd = new SqlCommand("UPDATE end_users SET password = @NewPassword OUTPUT INSERTED.password WHERE id = @UserId;", conn);
       SqlParameter uPassword = new SqlParameter("@NewPassword", newPassword);
       cmd.Parameters.Add(uPassword);
       SqlParameter uId = new SqlParameter("@UserId", this.Id);
@@ -123,7 +123,7 @@ namespace SnippetTool
     {
       SqlConnection conn = DB.Connection();
       conn.Open();
-      SqlCommand cmd = new SqlCommand("SELECT * FROM end_user WHERE id = @UserId;", conn);
+      SqlCommand cmd = new SqlCommand("SELECT * FROM end_users WHERE id = @UserId;", conn);
       SqlParameter uId = new SqlParameter("@UserId", id.ToString());
       cmd.Parameters.Add(uId);
       SqlDataReader rdr = cmd.ExecuteReader();
@@ -151,7 +151,7 @@ namespace SnippetTool
     {
       SqlConnection conn = DB.Connection();
       conn.Open();
-      SqlCommand cmd = new SqlCommand("INSERT INTO end_user (name, password) OUTPUT INSERTED.id VALUES (@UserName, @UserPassword);", conn);
+      SqlCommand cmd = new SqlCommand("INSERT INTO end_users (name, password) OUTPUT INSERTED.id VALUES (@UserName, @UserPassword);", conn);
       SqlParameter uName = new SqlParameter("@UserName", this.Name);
       cmd.Parameters.Add(uName);
       SqlParameter uPassword = new SqlParameter("@UserPassword", this.Password);
@@ -174,7 +174,7 @@ namespace SnippetTool
     {
       SqlConnection conn = DB.Connection();
       conn.Open();
-      SqlCommand cmd = new SqlCommand("SELECT * FROM end_user;", conn);
+      SqlCommand cmd = new SqlCommand("SELECT * FROM end_users;", conn);
       SqlDataReader rdr = cmd.ExecuteReader();
       List<EndUser> allUsers = new List<EndUser> {};
       while(rdr.Read())
@@ -210,7 +210,7 @@ namespace SnippetTool
     {
       SqlConnection conn = DB.Connection();
       conn.Open();
-      SqlCommand cmd = new SqlCommand("DELETE FROM end_user;", conn);
+      SqlCommand cmd = new SqlCommand("DELETE FROM end_users;", conn);
       cmd.ExecuteNonQuery();
       if(conn != null)
       {
