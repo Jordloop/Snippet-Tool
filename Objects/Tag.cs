@@ -47,7 +47,7 @@ namespace SnippetTool
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("SELECT * FROM tag;", conn );
+      SqlCommand cmd = new SqlCommand("SELECT * FROM tags;", conn );
       SqlDataReader rdr = cmd.ExecuteReader();
 
       while(rdr.Read())
@@ -77,7 +77,7 @@ namespace SnippetTool
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("INSERT INTO tag (text ) OUTPUT INSERTED.id VALUES (@TagText );", conn );
+      SqlCommand cmd = new SqlCommand("INSERT INTO tags (text ) OUTPUT INSERTED.id VALUES (@TagText );", conn );
 
       SqlParameter textParameter = new SqlParameter("@TagText", this.Text);
 
@@ -105,7 +105,7 @@ namespace SnippetTool
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("SELECT * FROM tag WHERE id = @TagId;", conn );
+      SqlCommand cmd = new SqlCommand("SELECT * FROM tags WHERE id = @TagId;", conn );
 
       SqlParameter tagIdParameter = new SqlParameter("@TagId", id.ToString());
 
@@ -140,7 +140,7 @@ namespace SnippetTool
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("INSERT INTO join_snippet_tag(id_snippet, id_tag) VALUES (@SnippetId, @TagId)", conn );
+      SqlCommand cmd = new SqlCommand("INSERT INTO join_snippets_tags(id_snippet, id_tag) VALUES (@SnippetId, @TagId)", conn );
 
       SqlParameter SnippetIdParam = new SqlParameter("@SnippetId", newSnippet.Id );
 
@@ -163,7 +163,7 @@ namespace SnippetTool
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("SELECT snippet.* FROM tag JOIN join_snippet_tag ON (tag.id = join_snippet_tag.id_tag) JOIN snippet ON (snippet.id = join_snippet_tag.id_snippet) WHERE tag.id = @TagId", conn );
+      SqlCommand cmd = new SqlCommand("SELECT snippets.* FROM tags JOIN join_snippets_tags ON (tags.id = join_snippets_tags.id_tag) JOIN snippets ON (snippets.id = join_snippets_tags.id_snippet) WHERE tags.id = @TagId", conn );
 
       SqlParameter TagIdParam = new SqlParameter("@TagId", this.Id.ToString());
 
@@ -201,7 +201,7 @@ namespace SnippetTool
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("UPDATE tag SET text = @NewText OUTPUT INSERTED.text WHERE id = @TagId;", conn);
+      SqlCommand cmd = new SqlCommand("UPDATE tags SET text = @NewText OUTPUT INSERTED.text WHERE id = @TagId;", conn);
 
       SqlParameter newTextParameter = new SqlParameter("@NewText", newText);
 
@@ -234,7 +234,7 @@ namespace SnippetTool
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("DELETE FROM tag WHERE id = @TagId;", conn );
+      SqlCommand cmd = new SqlCommand("DELETE FROM tags WHERE id = @TagId;", conn );
 
       SqlParameter tagIdParameter = new SqlParameter("@TagId", this.Id);
 
@@ -251,7 +251,7 @@ namespace SnippetTool
     {
       SqlConnection conn = DB.Connection();
       conn.Open();
-      SqlCommand cmd = new SqlCommand("DELETE FROM tag", conn);
+      SqlCommand cmd = new SqlCommand("DELETE FROM tags", conn);
       cmd.ExecuteNonQuery();
       conn.Close();
     }
