@@ -21,7 +21,7 @@ namespace SnippetTool
     {
       SqlConnection conn = DB.Connection();
       conn.Open();
-      SqlCommand cmd = new SqlCommand("SELECT * FROM end_user WHERE name LIKE @Name AND password = @Password;", conn);
+      SqlCommand cmd = new SqlCommand("SELECT * FROM end_users WHERE name = @Name AND password = @Password;", conn);
       SqlParameter uName = new SqlParameter("@Name", username);
       cmd.Parameters.Add(uName);
       SqlParameter uPassword = new SqlParameter("@Password", password);
