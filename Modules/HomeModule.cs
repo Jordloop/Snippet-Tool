@@ -44,6 +44,19 @@ namespace SnippetTool
         return View["snippet_view.cshtml", allSnippets];
       };
 //------------------------------
+
+      Post["/user_create"] = _=>
+      {
+        EndUser newUser = new EndUser(Request.Form["user-name"], Request.Form["user-password"]);
+        newUser.Save();
+        return View["LOGINPAGE"];
+      };
+
+      Post["/user_login"] = _=>
+      {
+        bool loginAttempt = EndUser.LoginAttempt(Request.Form["user-name"], Request.Form["user-password"]);
+        return View["loginsuccess.cshtml", loginAttempt];
+      };
       // Get["/tag/{id}"] = parameters => {
       //   Dictionary<string, object> model = new Dictionary<string, object>();
       //   var SelectedTag = Tag.Find(parameters.id);

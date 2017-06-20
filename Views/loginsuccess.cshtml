@@ -1,0 +1,14 @@
+@{
+  Layout="Shared/_Layout";
+}
+<h1>User Login</h1>
+<hr />
+@if(@Model == true)
+{
+  <p><a href="/homepage">Homepage</a></p>
+}
+else
+{
+  <p>Login Failed</p>
+}
+<p><a href="/">Return to login</a></p>
