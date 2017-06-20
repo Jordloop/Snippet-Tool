@@ -104,6 +104,14 @@ namespace SnippetTool
       List<Snippet> result = new List<Snippet> {testSnippet};
       Assert.Equal(result, allUserSnippets);
     }
+    [Fact]
+    public void LoginAttempt_ReturnTrueIfSuccess_Bool()
+    {
+      EndUser testUser = new EndUser("Jerry", "password");
+      testUser.Save();
+      bool result = EndUser.LoginAttempt("Jerry", "password");
+      Assert.Equal(true, result);
+    }
     public void Dispose()
     {
       EndUser.DeleteAll();

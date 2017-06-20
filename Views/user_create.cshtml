@@ -1,0 +1,13 @@
+@{
+  Layout="Shared/_Layout";
+}
+<h1>Create User</h1>
+<hr/>
+<form action="/user_create" method="post">
+  <label for="user-name">Username</label>
+  <input type="text" name="user-name">
+  <label for="user-password">Password</label>
+  <input type="password" name="user-password">
+  <button type="submit">Add User</button>
+</form>
+<p><a href="/">Return Home</a></p>

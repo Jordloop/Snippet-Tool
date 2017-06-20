@@ -17,6 +17,30 @@ namespace SnippetTool
       Password = password;
     }
 
+    public static bool LoginAttempt(string username, string password)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+      SqlCommand cmd = new SqlCommand("SELECT * FROM end_user WHERE name LIKE @Name AND password = @Password;", conn);
+      SqlParameter uName = new SqlParameter("@Name", username);
+      cmd.Parameters.Add(uName);
+      SqlParameter uPassword = new SqlParameter("@Password", password);
+      cmd.Parameters.Add(uPassword);
+      SqlDataReader rdr = cmd.ExecuteReader();
+      string name = null;
+      while(rdr.Read())
+      {
+        name = rdr.GetString(1);
+      }
+      if(name != null)
+      {
+        return true;
+      }
+      else
+      {
+        return false;
+      }
+    }
     public void AddSnippet(Snippet code)
     {
       SqlConnection conn = DB.Connection();
