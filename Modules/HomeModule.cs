@@ -43,6 +43,18 @@ namespace SnippetTool
       {
         return View["snippet_create.cshtml"];
       };
+
+      Get["/snippet/{id}/delete"] = param => {
+        Dictionary<string, object> model = new Dictionary<string, object>{};
+        Snippet SelectedSnippet = Snippet.Find(param.id);
+        model.Add("snippet", SelectedSnippet);
+        return View["delete_confirm.cshtml", model];
+      };
+      Delete["/snippet/{id}/delete/"] = param => {
+      Snippet selectedSnippet = Snippet.Find(param.id);
+      selectedSnippet.Delete();
+      return View["action_success.cshtml"];
+      };
       //-----------------------------
 
       Post["/snippet/create"] = _ => {

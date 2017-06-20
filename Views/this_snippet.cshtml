@@ -19,3 +19,8 @@
 <pre>
 @Model["snippet"].Text;
 </pre>
+
+<form action="http://localhost:5004/snippet/@Model["snippet"].Id/delete">
+    <input type="submit" value="Delete">
+</form>
+<a href="/snippet/@Model["snippet"].Id/delete">Delete</a>
