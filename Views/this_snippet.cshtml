@@ -1,0 +1,17 @@
+@{
+  Layout="Shared/_Layout";
+}
+
+<h3>@Model["snippet"].Description</h3>
+
+@foreach (var tag in Model["tag"])
+{
+  <small>@tag.Text</small>
+}
+
+
+<form action='/snippet/@Model["snippet"].Id/add_tag' method="post">
+  <label for="tag-text">Tag: </label>
+  <input name="tag-text" type="text" required>
+  <button type="submit">Add Tag</button>
+</form>

@@ -7,7 +7,7 @@
   {
     @foreach (var snippet in Model)
     {
-      <li>@snippet.Text</li>
+      <li><a href="/snippet/@snippet.Id">@snippet.Description</a></li>
     }
   }
 </ul>

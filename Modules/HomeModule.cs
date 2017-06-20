@@ -14,17 +14,42 @@ namespace SnippetTool
         return View["tag_view.cshtml", allTags];
       };
 
-      Get["/snippet_view"] = _ => {
+      Get["/snippet/view"] = _ => {
         List<Snippet> allSnippets = Snippet.GetAll();
         return View["snippet_view.cshtml", allSnippets];
       };
 
-      Post["/tag_new"] = _ => {
+      Get["/snippet/{id}"] = param => {
+        Dictionary<string, object> model = new Dictionary<string, object>{};
+        Snippet SelectedSnippet = Snippet.Find(param.id);
+        List<Tag> SnippetTags = SelectedSnippet.GetTags();
+
+        model.Add("snippet", SelectedSnippet);
+        model.Add("tag", SnippetTags);
+        return View["this_snippet.cshtml", model];
+      };
+
+      Post["/snippet/{id}/add_tag"] = param => {
+        Dictionary<string, object> model = new Dictionary<string, object>{};
+        Snippet SelectedSnippet = Snippet.Find(param.id);
+
         Tag newTag = new Tag(Request.Form["tag-text"]);
         newTag.Save();
-        List<Tag> allTags = Tag.GetAll();
-        return View["tag_view.cshtml", allTags];
+        
+        SelectedSnippet.AddTag(newTag);
+        List<Tag> SnippetTags = SelectedSnippet.GetTags();
+
+        model.Add("snippet", SelectedSnippet);
+        model.Add("tag", SnippetTags);
+        return View["this_snippet.cshtml", model];
       };
+
+      // Post["/tag_new"] = _ => {
+      //   Tag newTag = new Tag Find((Request.Form["tag-text"]);
+      //   newTag.Save();
+      //   List<Tag> allTags = Tag.GetAll();
+      //   return View["tag_view.cshtml", allTags];
+      // };
 //-----------------------------
       Get["/snippet_create"] = _ =>
       {
@@ -66,14 +91,6 @@ namespace SnippetTool
       //   return View["tag_view.cshtml", model];
       // };
       //
-      // Get["/snippet/{id}"] = parameters => {
-      //   Dictionary<string, object> model = new Dictionary<string, object>();
-      //   var SelectedSnippet = Snippet.Find(parameters.id);
-      //   var SnippetTags = SelectedSnippet.GetTags();
-      //   model.Add("snippet", SelectedSnippet);
-      //   model.Add("tag", SnippetTags);
-      //   return View["snippet_view.cshtml", model];
-      // };
       //
       // Get["/tag/update/{id}"] = parameters => {
       //   Tag SelectedTag = new Tag.Find(parameters.id);
