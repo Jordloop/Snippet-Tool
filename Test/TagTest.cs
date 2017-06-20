@@ -98,6 +98,20 @@ namespace SnippetTool
     }
 
     [Fact]
+    public void Update_UpdatesTagInDatabase_True()
+    {
+      //Arrange
+      Tag testTag = new Tag("poop" );
+      testTag.Save();
+      string newTest = "loop";
+      //Act
+      testTag.Update(newTest );
+      string result = testTag.Text;
+      //Assert
+      Assert.Equal(newTest, result );
+    }
+
+    [Fact]
     public void Delete_DeletesTagFromDatabase_True()
     {
       //Arrange
@@ -123,4 +137,3 @@ namespace SnippetTool
 
   }
 }
-

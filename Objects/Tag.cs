@@ -14,7 +14,9 @@ namespace SnippetTool
       Text = newText;
       Id = newId;
     }
+//----Override Methods
 
+//Equals()----
     public override bool Equals(System.Object otherTag )
     {
       if (!(otherTag is Tag ))
@@ -30,12 +32,14 @@ namespace SnippetTool
         return (idEquality && textEquality );
       }
     }
+//GetHashCode----
     public override int GetHashCode()
     {
       return this.Text.GetHashCode();
     }
+//----Class Methods
 
-    //GetAll()
+//GetAll()----
     public static List<Tag> GetAll()
     {
       List<Tag> allTags = new List<Tag>{};
@@ -67,7 +71,7 @@ namespace SnippetTool
     }
 
 
-    //----Save()
+//Save()----
     public void Save()
     {
       SqlConnection conn = DB.Connection();
@@ -95,7 +99,7 @@ namespace SnippetTool
         conn.Close();
       }
     }
-
+//Find()----
     public static Tag Find(int id )
     {
       SqlConnection conn = DB.Connection();
@@ -130,7 +134,7 @@ namespace SnippetTool
       return foundTag;
     }
 
-    //----AddSnippet()
+//AddSnippet()----
     public void AddSnippet(Snippet newSnippet)
     {
       SqlConnection conn = DB.Connection();
@@ -153,7 +157,7 @@ namespace SnippetTool
       }
     }
 
-    //----GetSnippets()
+//GetSnippets()----
     public List<Snippet> GetSnippets()
     {
       SqlConnection conn = DB.Connection();
@@ -191,7 +195,40 @@ namespace SnippetTool
       return snippets;
     }
 
-    //----Delete()
+//Update()----
+    public void Update(string newText )
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("UPDATE tag SET text = @NewText OUTPUT INSERTED.text WHERE id = @TagId;", conn);
+
+      SqlParameter newTextParameter = new SqlParameter("@NewText", newText);
+
+      cmd.Parameters.Add(newTextParameter );
+
+      SqlParameter tagIdParameter = new SqlParameter("@TagId", this.Id);
+
+      cmd.Parameters.Add(tagIdParameter );
+
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        this.Text = rdr.GetString(0);
+      }
+      if(rdr != null )
+      {
+        rdr.Close();
+      }
+      if(conn != null )
+      {
+        conn.Close();
+      }
+    }
+
+
+//Delete()----
     public void Delete()
     {
       SqlConnection conn = DB.Connection();
@@ -209,7 +246,7 @@ namespace SnippetTool
         conn.Close();
       }
     }
-
+//DeleteAll()----
     public static void DeleteAll()
     {
       SqlConnection conn = DB.Connection();

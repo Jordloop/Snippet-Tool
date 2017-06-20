@@ -19,6 +19,9 @@ namespace SnippetTool
       Id = newId;
     }
 
+//----Override Methods
+
+//Equals()----
     public override bool Equals(System.Object otherSnippet )
     {
       if (!(otherSnippet is Snippet ))
@@ -36,12 +39,15 @@ namespace SnippetTool
         return (idEquality && textEquality && timeEquality && descriptionEquality  );
       }
     }
+//GetHashCode()----
     public override int GetHashCode()
     {
       return this.Description.GetHashCode();
     }
 
-//GetAll()
+//----Class Methods
+
+//----GetAll()
     public static List<Snippet> GetAll()
     {
       List<Snippet> allSnippets = new List<Snippet>{};
@@ -73,27 +79,18 @@ namespace SnippetTool
       }
       return allSnippets;
     }
-
+//----ConvertSnippetText()
     public string ConvertSnippetText(string userInput)
     {
       // Console.WriteLine(userInput);
       string userInputConverted = userInput.Replace("33", "44");
       return userInputConverted;
     }
-
-    //----Save()
+//----Save()
     public void Save()
     {
       SqlConnection conn = DB.Connection();
       conn.Open();
-
-// We need to save text data with @-symbol replaced with HTML-parseable text.
-// 1. create external method to convert @
-// 2. call method inside Save method
-// 3. test using dummy data
-// 4. find out which var rep's actual string of user entered text
-
-
 
       SqlCommand cmd = new SqlCommand("INSERT INTO snippet (description, text, time ) OUTPUT INSERTED.id VALUES (@SnippetDesctiption, @SnippetText, @SnippetTimestamp );", conn );
 
@@ -123,7 +120,7 @@ namespace SnippetTool
       }
     }
 
-    //----Find()
+//----Find()
     public static Snippet Find(int id )
     {
       SqlConnection conn = DB.Connection();
@@ -162,7 +159,7 @@ namespace SnippetTool
       return foundSnippet;
     }
 
-    //----AddTag()
+//----AddTag()
     public void AddTag(Tag newTag)
     {
       SqlConnection conn = DB.Connection();
@@ -185,7 +182,7 @@ namespace SnippetTool
       }
     }
 
-    //----GetTags()
+//----GetTags()
     public List<Tag> GetTags()
     {
       SqlConnection conn = DB.Connection();
@@ -221,7 +218,11 @@ namespace SnippetTool
       return tags;
     }
 
-    //----Delete()
+//----Update()
+
+
+
+//----Delete()
     public void Delete()
     {
       SqlConnection conn = DB.Connection();
@@ -240,7 +241,7 @@ namespace SnippetTool
       }
     }
 
-
+//----DeleteAll()
     public static void DeleteAll()
     {
       SqlConnection conn = DB.Connection();
