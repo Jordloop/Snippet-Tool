@@ -1,10 +1,11 @@
 @{
   Layout="Shared/_Layout";
 }
-<form action="/snippet_create" method="post">
+<form action="/snippet/create" method="post">
   <label for="snippet-text">Code:</label>
-  <input name="snippet-text" type="text">
-  <label for="snippet-description">Description</label>
+  <textarea name="snippet-text" type="text" required rows="10" cols="80">
+  </textarea>
+  <br><label for="snippet-description">Description</label>
   <input name="snippet-description" type="text">
 
 @* <input type="hidden" name="_method" value="PATCH"> *@
