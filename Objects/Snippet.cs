@@ -219,7 +219,36 @@ namespace SnippetTool
     }
 
 //----Update()
+public void Update(string newText )
+{
+  SqlConnection conn = DB.Connection();
+  conn.Open();
 
+  SqlCommand cmd = new SqlCommand("UPDATE snippet SET text = @NewText OUTPUT INSERTED.text WHERE id = @SnippetId;", conn);
+
+  SqlParameter newTextParameter = new SqlParameter("@NewText", newText);
+
+  cmd.Parameters.Add(newTextParameter );
+
+  SqlParameter snippetIdParameter = new SqlParameter("@SnippetId", this.Id);
+
+  cmd.Parameters.Add(snippetIdParameter );
+
+  SqlDataReader rdr = cmd.ExecuteReader();
+
+  while(rdr.Read())
+  {
+    this.Text = rdr.GetString(0);
+  }
+  if(rdr != null )
+  {
+    rdr.Close();
+  }
+  if(conn != null )
+  {
+    conn.Close();
+  }
+}
 
 
 //----Delete()

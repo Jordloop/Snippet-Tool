@@ -98,6 +98,20 @@ namespace SnippetTool
     }
 
     [Fact]
+    public void Update_UpdatesSnippetInDatabase_True()
+    {
+      //Arrange
+      Snippet testSnippet = new Snippet("Some Code", "x = 'Foo'", new DateTime(2017, 6, 19, 12, 55, 00));
+      testSnippet.Save();
+      string newTest = "y = 'Mii'";
+      //Act
+      testSnippet.Update(newTest);
+      string result = testSnippet.Text;
+      //Assert
+      Assert.Equal(newTest, result);
+    }
+
+    [Fact]
     public void Delete_DeletesSnippetFromDatabase_True()
     {
       //Arrange
@@ -122,4 +136,3 @@ namespace SnippetTool
 
   }
 }
-
