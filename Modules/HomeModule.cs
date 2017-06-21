@@ -73,6 +73,16 @@ namespace SnippetTool
         return View["user_login.cshtml"];
       };
 
+      Get["/search/snippets"] = _ => {
+        List<Snippet> allSnippets = new List<Snippet>{};
+        return View["search_snippet.cshtml", allSnippets];
+      };
+
+      Post["/search/snippets"] = _ => {
+        List<Snippet> allSnippets = Snippet.SearchSnippetText(Request.Form["search-string"]);
+        return View["search_snippet.cshtml", allSnippets];
+      };
+
       //Adrian's Pseudo-routes for user login/create pages*****************************************************
       Get["/"] = _=>
       {
