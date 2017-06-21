@@ -7,6 +7,8 @@
 ## Description
 
 This application will allow a user to store and retrieve snippets of code from a database.
+The user will be able to create a new user account.
+The user will be able to log in with a username and password.
 The user will be able to enter code into a text entry box.
 The user will be able to assign tags to any snippet of code.
 The user will be able to log in using their own password.
