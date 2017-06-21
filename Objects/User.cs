@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Security.Cryptography;
+using System.Text;
 using System;
 
 namespace SnippetTool
@@ -17,6 +19,38 @@ namespace SnippetTool
       Password = password;
     }
 
+    public static string PasswordHash(string unhashed, string alg, byte[] saltBytes)
+    {
+      //declare size of salt
+      if(saltBytes = null)
+      {
+        int minSalt = 4;
+        int maxSalt = 8;
+        Random random = new Random();
+        int saltSize = random.Next(minSalt, maxSalt);
+        //init byte array
+        saltBytes = new byte[saltSize];
+        //init RNG
+        RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
+        rng.GetNonZeroBytes(saltBytes);
+      }
+      //convert unhashed string to byte array
+      byte[] unhashedBytes = Encoding.UTF8.GetBytes(unhashed);
+      //init byte array with allocated space for text w/salt
+      byte[] unhashedBytesWithSalt = new byte[unhashedBytes.Length + saltBytes.Length];
+      //copy unhashed bytes into byte array
+      for (int i = 0; i < unhashedBytes.Length; i++)
+      {
+        unhashedBytesWithSalt[i] = unhashedBytes[i];
+      }
+      for (int i = 0; i < saltBytes.Length; i++)
+      {
+        unhashedBytesWithSalt[unhashedBytes.Length + i] = saltBytes[i];
+      }
+      //init hash alg
+      HashAlgorithm hash = new SHA256Managed();
+      byte[] hashBytes = hash.ComputeHash(unhashedBytesWithSalt);
+    }
     public static bool LoginAttempt(string username, string password)
     {
       SqlConnection conn = DB.Connection();
