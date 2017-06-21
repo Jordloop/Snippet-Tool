@@ -10,11 +10,44 @@ namespace SnippetTool
   {
     public HomeModule()
     {
+      //*************************************************************************************************
+      //---------------------USER--------------------------------USER
+      //ROOT
+      Get["/"] = _=>
+      {
+        return View["user_login.cshtml"];
+      };
+      //USER LOGIN
+      Post["/user_login"] = _=>
+      {
+        string unhashed = Request.Form["user-password"];
+        byte[] tmp = new byte[0];
+        string hash = EndUser.PasswordHash(unhashed, tmp);
+        bool loginResult = EndUser.LoginAttempt(Request.Form["user-name"], hash);
+        return View["loginsuccess.cshtml", loginResult];
+      };
+      //CREATE USER
+      Get["/user_create"] = _=>
+      {
+        return View["user_create.cshtml"];
+      };
+      Post["/user_create"] = _=>
+      {
+        EndUser newUser = new EndUser(Request.Form["user-name"], Request.Form["user-password"]);
+        byte[] tmp = new byte[0];
+        string hash = EndUser.PasswordHash(newUser.Password, tmp);
+        newUser.Password = hash;
+        newUser.Save();
+        return View["user_login.cshtml"];
+      };
+      //***************************************************************************************************
+      //------------------------------SNIPPET------------------------------SNIPPET
+      //ALL SNIPPETS
       Get["/snippet/view"] = _ => {
         List<Snippet> allSnippets = Snippet.GetAll();
         return View["snippet_view.cshtml", allSnippets];
       };
-
+      //SPECIFIC SNIPPET
       Get["/snippet/{id}"] = param => {
         Dictionary<string, object> model = new Dictionary<string, object>{};
         Snippet SelectedSnippet = Snippet.Find(param.id);
@@ -24,7 +57,7 @@ namespace SnippetTool
         model.Add("tag", SnippetTags);
         return View["this_snippet.cshtml", model];
       };
-
+      //SNIPPET -ADD TAG
       Post["/snippet/{id}/add_tag"] = param => {
         Dictionary<string, object> model = new Dictionary<string, object>{};
         Snippet SelectedSnippet = Snippet.Find(param.id);
@@ -39,18 +72,19 @@ namespace SnippetTool
         model.Add("tag", SnippetTags);
         return View["this_snippet.cshtml", model];
       };
-
+      //CREATE SNIPPET ??????????????????
       Get["/snippet/create"] = _ =>
       {
         return View["snippet_create.cshtml"];
       };
-
+      //DELETE SNIPPET???????????????????????
       Get["/snippet/{id}/delete"] = param => {
         Dictionary<string, object> model = new Dictionary<string, object>{};
         Snippet SelectedSnippet = Snippet.Find(param.id);
         model.Add("snippet", SelectedSnippet);
         return View["delete_confirm.cshtml", model];
       };
+      //DOWNLOAD SPECIFIC SNIPPET
       Get["/snippet/{id}/download"] = param =>
       {
         Snippet selectedSnippet = Snippet.Find(param.id);
@@ -61,13 +95,13 @@ namespace SnippetTool
         }
         return View["action_success.cshtml"];
       };
+      //DELETE SNIPPET?????????????????????
       Delete["/snippet/{id}/delete/"] = param => {
       Snippet selectedSnippet = Snippet.Find(param.id);
       selectedSnippet.Delete();
       return View["action_success.cshtml"];
       };
-      //-----------------------------
-
+      //CREATE SNIPPET ????????????????????
       Post["/snippet/create"] = _ => {
         Snippet newSnippet = new Snippet(Request.Form["snippet-description"], Request.Form["snippet-text"], new DateTime(2000, 1, 1, 12, 00, 00));
 
@@ -78,7 +112,7 @@ namespace SnippetTool
         List<Snippet> allSnippets = Snippet.GetAll();
         return View["snippet_view.cshtml", allSnippets];
       };
-
+      //ALL SNIPPET DELETE
       Post["/snippet/delete"] = _ => {
         Snippet.DeleteAll();
         return View["user_login.cshtml"];
@@ -92,7 +126,8 @@ namespace SnippetTool
         List<Snippet> allSnippets = Snippet.SearchSnippetText(Request.Form["search-string"]);
         return View["search_snippet.cshtml", allSnippets];
       };
-
+      //*******************************************************************************************
+      //-----------------------------------TAG---------------------------TAG
 //SearchTag
       Get["/search/tags"] = _ => {
         List<Tag> allTags = Tag.GetAll();
@@ -114,37 +149,6 @@ namespace SnippetTool
         return View["search_tag.cshtml", model];
       };
 
-      //Adrian's Pseudo-routes for user login/create pages*****************************************************
-      Get["/"] = _=>
-      {
-        return View["user_login.cshtml"];
-      };
-      Post["/user_login"] = _=>
-      {
-        string unhashed = Request.Form["user-password"];
-        byte[] tmp = new byte[0];
-        string hash = EndUser.PasswordHash(unhashed, tmp);
-        bool loginResult = EndUser.LoginAttempt(Request.Form["user-name"], hash);
-        return View["loginsuccess.cshtml", loginResult];
-      };
-      Get["/user_create"] = _=>
-      {
-        return View["user_create.cshtml"];
-      };
-      Post["/user_create"] = _=>
-      {
-        EndUser newUser = new EndUser(Request.Form["user-name"], Request.Form["user-password"]);
-        byte[] tmp = new byte[0];
-        string hash = EndUser.PasswordHash(newUser.Password, tmp);
-        newUser.Password = hash;
-        newUser.Save();
-        return View["user_login.cshtml"];
-      };
-      Get["/homepage"] = _=>
-      {
-        return View["HOMEPAGE"];
-      };
-      //***************************************************************************************************
 //       Get["/snippet_view"] = _ => {
 //         List<Snippet> allSnippets = Snippet.GetAll();
 //         return View["snippet_view.cshtml", allSnippets];
