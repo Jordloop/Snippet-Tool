@@ -29,6 +29,7 @@ namespace SnippetTool
         Snippet SelectedSnippet = Snippet.Find(param.id);
 
         Tag newTag = new Tag(Request.Form["tag-text"]);
+
         newTag.Save();
 
         SelectedSnippet.AddTag(newTag);

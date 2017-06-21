@@ -166,20 +166,29 @@ namespace SnippetTool
 
     public int DoNotAddTagIfAlreadyExists(Tag newTag)
     {
+// this method gets our new tag object before it's Added in Add
 
+
+// We have a list because we had trouble accessing the vars inside the While RDR brlow
       List<int> allTagId = new List<int>{};
+
       SqlConnection conn = DB.Connection();
       conn.Open();
       SqlCommand cmd = new SqlCommand("SELECT * FROM tags WHERE text = @newTag;", conn);
+// find all tags in the tag table matching the Text porperty of our newTag object
       SqlParameter TagIdParameter = new SqlParameter("@newTag", newTag.Text);
+
       cmd.Parameters.Add(TagIdParameter);
+
       SqlDataReader rdr = cmd.ExecuteReader();
 
+// CREATE A BOOL OUTSIDE
       while (rdr.Read()) {
-        int tagId = rdr.GetInt32(0);
-        Console.WriteLine("tagId = {0}", tagId);
-        allTagId.Add(tagId);
+        if(newTag.Id  == rdr.GetInt32(0)){
+            // SET BOOL TO T/F HERE on whether it already exists
+        }
       }
+
       if (rdr != null )
       {
         rdr.Close();
@@ -188,17 +197,7 @@ namespace SnippetTool
       {
         conn.Close();
       }
-// if newTag.id already exists, replace it with
-      if(allTagId[0] == newTag.Id)
-      {
-// then newTag.Id gets the id of the one we already found
-        newTag.Id = allTagId[0];
-      }
-      else
-      {
-        newTag.Id = newTag.Id;
-      }
-      return newTag.Id;
+      return //THAT BOOL;
     }
 
 //----AddTag()
