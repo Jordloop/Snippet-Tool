@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using System;
 using Nancy;
 using Nancy.ViewEngines.Razor;
@@ -50,6 +51,16 @@ namespace SnippetTool
         model.Add("snippet", SelectedSnippet);
         return View["delete_confirm.cshtml", model];
       };
+      Get["/snippet/{id}/download"] = param =>
+      {
+        Snippet selectedSnippet = Snippet.Find(param.id);
+        string snippetContent = selectedSnippet.Text;
+        using (StreamWriter objWriter = new StreamWriter("snippetText"+param.id+".txt"))
+        {
+            objWriter.Write(snippetContent);
+        }
+        return View["action_success.cshtml"];
+      };
       Delete["/snippet/{id}/delete/"] = param => {
       Snippet selectedSnippet = Snippet.Find(param.id);
       selectedSnippet.Delete();
@@ -98,7 +109,7 @@ namespace SnippetTool
         model.Add("Tags", allTags);
         model.Add("Snippets", allSnippets);
 
-        
+
 
         return View["search_tag.cshtml", model];
       };
