@@ -159,27 +159,66 @@ namespace SnippetTool
       return foundSnippet;
     }
 
+//----CheckUniqueTag()
+// Before allowing AddTag to run,
+// we need to check if its id already exists in db
+// to prevent duplicates.
+
+    public int DoNotAddTagIfAlreadyExists(Tag newTag)
+    {
+
+      List<int> allTagId = new List<int>{};
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+      SqlCommand cmd = new SqlCommand("SELECT * FROM tags WHERE text = @newTag;", conn);
+      SqlParameter TagIdParameter = new SqlParameter("@newTag", newTag.Text);
+      cmd.Parameters.Add(TagIdParameter);
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      while (rdr.Read()) {
+        int tagId = rdr.GetInt32(0);
+        Console.WriteLine("tagId = {0}", tagId);
+        allTagId.Add(tagId);
+      }
+      if (rdr != null )
+      {
+        rdr.Close();
+      }
+      if (conn != null )
+      {
+        conn.Close();
+      }
+// if newTag.id already exists, replace it with
+      if(allTagId[0] == newTag.Id)
+      {
+// then newTag.Id gets the id of the one we already found
+        newTag.Id = allTagId[0];
+      }
+      else
+      {
+        newTag.Id = newTag.Id;
+      }
+      return newTag.Id;
+    }
+
 //----AddTag()
     public void AddTag(Tag newTag)
     {
+      int modifiedTagId = DoNotAddTagIfAlreadyExists(newTag);
       SqlConnection conn = DB.Connection();
       conn.Open();
-
       SqlCommand cmd = new SqlCommand("INSERT INTO join_snippets_tags(id_snippet, id_tag) VALUES (@SnippetId, @TagId)", conn );
-
-      SqlParameter TagIdParam = new SqlParameter("@TagId",newTag.Id);
-
+      // SqlParameter TagIdParam = new SqlParameter("@TagId",newTag.Id);
+      SqlParameter TagIdParam = new SqlParameter("@TagId",modifiedTagId);
       cmd.Parameters.Add(TagIdParam );
-
       SqlParameter SnippetIdParam = new SqlParameter("@SnippetId",this.Id);
-
       cmd.Parameters.Add(SnippetIdParam );
-
       cmd.ExecuteNonQuery();
       if(conn != null )
       {
         conn.Close();
       }
+
     }
 
 //----GetTags()
