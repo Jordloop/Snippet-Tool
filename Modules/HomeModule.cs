@@ -80,7 +80,10 @@ namespace SnippetTool
       };
       Post["/user_login"] = _=>
       {
-        bool loginResult = EndUser.LoginAttempt(Request.Form["user-name"], Request.Form["user-password"]);
+        string unhashed = Request.Form["user-password"];
+        byte[] tmp = new byte[0];
+        string hash = EndUser.PasswordHash(unhashed, tmp);
+        bool loginResult = EndUser.LoginAttempt(Request.Form["user-name"], hash);
         return View["loginsuccess.cshtml", loginResult];
       };
       Get["/user_create"] = _=>
@@ -90,6 +93,9 @@ namespace SnippetTool
       Post["/user_create"] = _=>
       {
         EndUser newUser = new EndUser(Request.Form["user-name"], Request.Form["user-password"]);
+        byte[] tmp = new byte[0];
+        string hash = EndUser.PasswordHash(newUser.Password, tmp);
+        newUser.Password = hash;
         newUser.Save();
         return View["user_login.cshtml"];
       };

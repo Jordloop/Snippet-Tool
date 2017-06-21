@@ -113,7 +113,7 @@ namespace SnippetTool
       Assert.Equal(true, result);
     }
     [Fact]
-    public void PasswordHash_HashesPasswordB4DB_String()
+    public void PasswordHash_VerifyHash_HashesPasswordAndVerifies_String_Bool()
     {
       EndUser testUser = new EndUser("Jerry", "password");
       string unhashed = testUser.Password;
@@ -122,8 +122,8 @@ namespace SnippetTool
       testUser.Password = hashed;
       testUser.Save();
       string loginTest = "password";
-      string hashedLoginTest = EndUser.PasswordHash(loginTest, tmp);
-      Assert.Equal(hashedLoginTest, hashed);
+      bool result = EndUser.VerifyHash(loginTest, hashed);
+      Assert.Equal(true, result);
     }
     public void Dispose()
     {
