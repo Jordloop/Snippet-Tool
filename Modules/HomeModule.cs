@@ -84,21 +84,24 @@ namespace SnippetTool
 
 //SearchTag
       Get["/search/tags"] = _ => {
-        List<Tag> allTags = Tag.GetAll();
-        List<Snippet> allSnippets = new List<Snippet>{};
         Dictionary<string, object> model = new Dictionary<string, object>{};
+
+        List<Tag> allTags = Tag.GetAll();
+        List<Snippet> searchedSnippets = new List<Snippet>{};
+
+        model.Add("searched", searchedSnippets);
         model.Add("Tags", allTags);
-        model.Add("Snippets", allSnippets);
+
         return View["search_tag.cshtml", model];
       };
       Post["/search/tags"] = _ => {
-        List<Tag> allTags = Tag.GetAll();
-        List<Snippet> allSnippets = new List<Snippet>{};
         Dictionary<string, object> model = new Dictionary<string, object>{};
-        model.Add("Tags", allTags);
-        model.Add("Snippets", allSnippets);
 
-        
+        List<Tag> allTags = Tag.GetAll();
+        List<Snippet> searchedSnippets = Tag.SearchSnippetsByTag(Request.Form["tag-id"]);
+
+        model.Add("searched", searchedSnippets);
+        model.Add("Tags", allTags);
 
         return View["search_tag.cshtml", model];
       };
