@@ -246,6 +246,9 @@ namespace SnippetTool
         conn.Close();
       }
     }
+
+
+
 //DeleteAll()----
     public static void DeleteAll()
     {

@@ -92,9 +92,9 @@ namespace SnippetTool
      testSnippet.AddTag(firstTag );
      testSnippet.AddTag(secondTag );
      List<Tag> testTags = testSnippet.GetTags();
-     List<Tag> contolTags = new List<Tag>{firstTag, secondTag };
+     List<Tag> controlTags = new List<Tag>{firstTag, secondTag };
      //Assert
-     Assert.Equal(contolTags, testTags );
+     Assert.Equal(controlTags, testTags );
     }
 
     [Fact]
@@ -109,6 +109,27 @@ namespace SnippetTool
       string result = testSnippet.Text;
       //Assert
       Assert.Equal(newTest, result);
+    }
+
+    [Fact]
+    public void Search_SearchSnippetText_True()
+    {
+      Snippet testSnippet = new Snippet("desc1", "x = 'Foo'", new DateTime(2000, 01, 01));
+      testSnippet.Save();
+
+      Snippet controlSnippet = new Snippet("desc2", "y = 'Foo'", new DateTime(1999, 01, 01));
+      controlSnippet.Save();
+
+      Snippet testCaseSensSnippet = new Snippet("desc3", "x = 'foo'", new DateTime  (1950, 01, 01));
+      testCaseSensSnippet.Save();
+
+      List<Snippet> result = Snippet.SearchSnippetText("Foo");
+
+      List<Snippet> expectedResult = new List<Snippet>{testSnippet, controlSnippet};
+
+      bool x = (result = expectedResult);
+
+      Assert.Equal(x, true);
     }
 
     [Fact]
