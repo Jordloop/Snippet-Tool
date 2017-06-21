@@ -1,1 +1,15 @@
-/*test css!*/
+body {
+
+  background-image: url("../img/BackgroundDistant.png");
+
+  /*background-image: url("../../img/BackgroundDistant.png");*/
+  /*background-image: url("BackgroundLocal.png");*/
+  background-color: blue;
+
+min-height: 100%;
+background-repeat: no-repeat;
+background-attachment: fixed;
+background-position: center;
+background-size: cover;}
+
+}
