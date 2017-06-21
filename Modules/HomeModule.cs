@@ -72,15 +72,35 @@ namespace SnippetTool
         Snippet.DeleteAll();
         return View["user_login.cshtml"];
       };
-
+//SearchSnippet
       Get["/search/snippets"] = _ => {
         List<Snippet> allSnippets = new List<Snippet>{};
         return View["search_snippet.cshtml", allSnippets];
       };
-
       Post["/search/snippets"] = _ => {
         List<Snippet> allSnippets = Snippet.SearchSnippetText(Request.Form["search-string"]);
         return View["search_snippet.cshtml", allSnippets];
+      };
+
+//SearchTag
+      Get["/search/tags"] = _ => {
+        List<Tag> allTags = Tag.GetAll();
+        List<Snippet> allSnippets = new List<Snippet>{};
+        Dictionary<string, object> model = new Dictionary<string, object>{};
+        model.Add("Tags", allTags);
+        model.Add("Snippets", allSnippets);
+        return View["search_tag.cshtml", model];
+      };
+      Post["/search/tags"] = _ => {
+        List<Tag> allTags = Tag.GetAll();
+        List<Snippet> allSnippets = new List<Snippet>{};
+        Dictionary<string, object> model = new Dictionary<string, object>{};
+        model.Add("Tags", allTags);
+        model.Add("Snippets", allSnippets);
+
+        
+
+        return View["search_tag.cshtml", model];
       };
 
       //Adrian's Pseudo-routes for user login/create pages*****************************************************
