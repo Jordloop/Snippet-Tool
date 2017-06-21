@@ -117,12 +117,13 @@ namespace SnippetTool
     {
       EndUser testUser = new EndUser("Jerry", "password");
       string unhashed = testUser.Password;
-      string hashed = EndUser.PasswordHash(unhashed);
+      byte[] tmp = new byte[0];
+      string hashed = EndUser.PasswordHash(unhashed, tmp);
       testUser.Password = hashed;
       testUser.Save();
-      string testHash = EndUser.PasswordHash("password");
-      string result = testUser.Password;
-      Assert.Equal(result, testHash);
+      string loginTest = "password";
+      string hashedLoginTest = EndUser.PasswordHash(loginTest, tmp);
+      Assert.Equal(hashedLoginTest, hashed);
     }
     public void Dispose()
     {

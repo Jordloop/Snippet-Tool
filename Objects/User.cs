@@ -19,10 +19,10 @@ namespace SnippetTool
       Password = password;
     }
 
-    public static string PasswordHash(string unhashed, string alg, byte[] saltBytes)
+    public static string PasswordHash(string unhashed, byte[] saltBytes)
     {
       //declare size of salt
-      if(saltBytes = null)
+      if(saltBytes == null)
       {
         int minSalt = 4;
         int maxSalt = 8;
@@ -50,6 +50,35 @@ namespace SnippetTool
       //init hash alg
       HashAlgorithm hash = new SHA256Managed();
       byte[] hashBytes = hash.ComputeHash(unhashedBytesWithSalt);
+      byte[] hashWithSalt = new byte[hashBytes.Length + saltBytes.Length];
+      for (int i = 0; i < hashBytes.Length; i++)
+      {
+        hashWithSalt[i] = hashBytes[i];
+      }
+      for (int i = 0; i < saltBytes.Length; i++)
+      {
+        hashWithSalt[hashBytes.Length + i] = saltBytes[i];
+      }
+      string hashValue = Convert.ToBase64String(hashWithSalt);
+      return hashValue;
+    }
+    public static bool VerifyHash(string unhashed, string hashValue)
+    {
+      byte[] hashWithSalt = Convert.FromBase64String(hashValue);
+      int hashSizeBits, hashSizeBytes;
+      hashSizeBits = 256;
+      hashSizeBytes = hashSizeBits/8;
+      if (hashWithSalt.Length < hashSizeBytes)
+      {
+        return false;
+      }
+      byte[] saltBytes = new byte[hashWithSalt.Length - hashSizeBytes];
+      for (int i = 0; i < saltBytes.Length; i++)
+      {
+        saltBytes[i] = hashWithSalt[hashSizeBytes + i];
+      }
+      string expectedHashString = PasswordHash(unhashed, saltBytes);
+      return (hashValue == expectedHashString);
     }
     public static bool LoginAttempt(string username, string password)
     {

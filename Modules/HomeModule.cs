@@ -79,7 +79,6 @@ namespace SnippetTool
         return View["user_login.cshtml"];
       };
       Post["/user_login"] = _=>
-
       {
         bool loginResult = EndUser.LoginAttempt(Request.Form["user-name"], Request.Form["user-password"]);
         return View["loginsuccess.cshtml", loginResult];
