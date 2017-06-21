@@ -249,13 +249,10 @@ public void Update(string newText )
 //Search()----
     public static List<Snippet> SearchSnippetText(string searchText)
     {
-      Console.WriteLine("searchText = {0}", searchText);
-
       SqlConnection conn = DB.Connection();
       conn.Open();
 
       searchText = '%' + searchText + '%';
-      Console.WriteLine("searchText = {0}", searchText);
       SqlCommand cmd = new SqlCommand("SELECT * FROM snippets WHERE  snippets.text LIKE @SearchText COLLATE Latin1_General_CS_AS", conn);
 
       SqlParameter textParameter = new SqlParameter("@SearchText", searchText);
@@ -264,19 +261,15 @@ public void Update(string newText )
       SqlDataReader rdr = cmd.ExecuteReader();
       List<Snippet> snippets = new List<Snippet>{};
 
-      Console.WriteLine("rdr read: {0}", rdr.Read());
       while(rdr.Read())
       {
-        Console.WriteLine("ding!");
         int snippetId = rdr.GetInt32(0);
-        Console.WriteLine("snippetId = {0}", snippetId);
         string snippetDesc = rdr.GetString(1);
         string snippetText = rdr.GetString(2);
         DateTime snippetDatetime = rdr.GetDateTime(3);
 
         Snippet newSnippet = new Snippet(snippetDesc, snippetText, snippetDatetime, snippetId);
         snippets.Add(newSnippet);
-        Console.WriteLine("newSnippet = {0}", newSnippet);
       }
 
       if (rdr != null)

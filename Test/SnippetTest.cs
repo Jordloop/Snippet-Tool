@@ -123,13 +123,13 @@ namespace SnippetTool
       Snippet testCaseSensSnippet = new Snippet("desc3", "x = 'foo'", new DateTime  (1950, 01, 01));
       testCaseSensSnippet.Save();
 
-      List<Snippet> result = Snippet.SearchSnippetText("Foo");
+      List<Snippet> testList = Snippet.SearchSnippetText("Foo");
+      List<Snippet> expectedList = new List<Snippet>{testSnippet, controlSnippet};
 
-      List<Snippet> expectedResult = new List<Snippet>{testSnippet, controlSnippet};
+      bool testTrue = (testList.Contains(testSnippet) && testList.Contains(controlSnippet));
+      bool controlTrue = (expectedList.Contains(testSnippet) && expectedList.Contains(controlSnippet));
 
-      bool x = (result = expectedResult);
-
-      Assert.Equal(x, true);
+      Assert.Equal(testTrue, controlTrue);
     }
 
     [Fact]
