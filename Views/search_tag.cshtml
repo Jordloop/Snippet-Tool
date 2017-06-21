@@ -1,0 +1,23 @@
+@{
+  Layout="Shared/_Layout";
+}
+
+@if (@Model.Count != 0)
+{
+
+  <form action="/search/tags" method="post">
+    <label for="tag-text">Tag</label>
+    <input name="tag-text" type="text">
+    <select name = "tag-id">
+    @foreach (var tag in Model["Tags"])
+    {
+      <option value="@tag.Id">@tag.Text</option>
+    }
+    </select>
+    <br><br><button type="submit">Search Tag</button>
+  </form>
+}
+else
+{
+  <p>No snippets to view</p>
+}
