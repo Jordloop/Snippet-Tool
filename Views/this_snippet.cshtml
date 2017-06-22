@@ -3,24 +3,40 @@
 }
 
 <h3>@Model["snippet"].Description</h3>
+<hr />
 
 @foreach (var tag in Model["tag"])
 {
   <small>@tag.Text</small>
 }
-
+<hr />
 
 <form action='/snippet/@Model["snippet"].Id/add_tag' method="post">
   <label for="tag-text">Tag: </label>
-  <input name="tag-text" type="text" required>
+  <input name="tag-text" type="text" required autofocus>
   <button type="submit">Add Tag</button>
 </form>
-
+<br>
 <pre>
-@Model["snippet"].Text;
+@Model["snippet"].Text
 </pre>
 
-<form action="http://localhost:5004/snippet/@Model["snippet"].Id/delete">
-    <input type="submit" value="Delete">
-</form>
-<a href="/snippet/@Model["snippet"].Id/delete">Delete</a>
+<hr />
+<a id="linkBox" href ="/snippet/@Model["snippet"].Id/update">Update Snippet</a>
+<a id="linkBox" href="/snippet/@Model["snippet"].Id/download">Download Snippet</a>
+<a id="linkBox" href ="/snippet/@Model["snippet"].Id/delete">Delete Snippet</a>
+
+<style>
+ #btn {
+   margin-left: 10%;
+ }
+ #linkBox {
+   border: solid gray 1px;
+   padding: 4px;
+   color: black;
+   background-color: #E8E8E8;
+   text-decoration: none;
+   font-family: sans-serif;
+   margin-right: 10px;
+ }
+</style>

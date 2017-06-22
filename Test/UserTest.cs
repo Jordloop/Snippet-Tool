@@ -112,6 +112,19 @@ namespace SnippetTool
       bool result = EndUser.LoginAttempt("Jerry", "password");
       Assert.Equal(true, result);
     }
+    [Fact]
+    public void PasswordHash_VerifyHash_HashesPasswordAndVerifies_String_Bool()
+    {
+      EndUser testUser = new EndUser("Jerry", "password");
+      string unhashed = testUser.Password;
+      byte[] tmp = new byte[0];
+      string hashed = EndUser.PasswordHash(unhashed, tmp);
+      testUser.Password = hashed;
+      testUser.Save();
+      string loginTest = "password";
+      bool result = EndUser.VerifyHash(loginTest, hashed);
+      Assert.Equal(true, result);
+    }
     public void Dispose()
     {
       EndUser.DeleteAll();

@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Security.Cryptography;
+using System.Text;
 using System;
 
 namespace SnippetTool
@@ -17,6 +19,60 @@ namespace SnippetTool
       Password = password;
     }
 
+    public static string PasswordHash(string unhashed, byte[] saltBytes)
+    {
+      if(saltBytes == null)
+      {
+        int minSalt = 4;
+        int maxSalt = 8;
+        Random random = new Random();
+        int saltSize = random.Next(minSalt, maxSalt);
+        saltBytes = new byte[saltSize];
+        RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
+        rng.GetNonZeroBytes(saltBytes);
+      }
+      byte[] unhashedBytes = Encoding.UTF8.GetBytes(unhashed);
+      byte[] unhashedBytesWithSalt = new byte[unhashedBytes.Length + saltBytes.Length];
+      for (int i = 0; i < unhashedBytes.Length; i++)
+      {
+        unhashedBytesWithSalt[i] = unhashedBytes[i];
+      }
+      for (int i = 0; i < saltBytes.Length; i++)
+      {
+        unhashedBytesWithSalt[unhashedBytes.Length + i] = saltBytes[i];
+      }
+      HashAlgorithm hash = new SHA256Managed();
+      byte[] hashBytes = hash.ComputeHash(unhashedBytesWithSalt);
+      byte[] hashWithSalt = new byte[hashBytes.Length + saltBytes.Length];
+      for (int i = 0; i < hashBytes.Length; i++)
+      {
+        hashWithSalt[i] = hashBytes[i];
+      }
+      for (int i = 0; i < saltBytes.Length; i++)
+      {
+        hashWithSalt[hashBytes.Length + i] = saltBytes[i];
+      }
+      string hashValue = Convert.ToBase64String(hashWithSalt);
+      return hashValue;
+    }
+    public static bool VerifyHash(string unhashed, string hashValue)
+    {
+      byte[] hashWithSalt = Convert.FromBase64String(hashValue);
+      int hashSizeBits, hashSizeBytes;
+      hashSizeBits = 256;
+      hashSizeBytes = hashSizeBits/8;
+      if (hashWithSalt.Length < hashSizeBytes)
+      {
+        return false;
+      }
+      byte[] saltBytes = new byte[hashWithSalt.Length - hashSizeBytes];
+      for (int i = 0; i < saltBytes.Length; i++)
+      {
+        saltBytes[i] = hashWithSalt[hashSizeBytes + i];
+      }
+      string expectedHashString = PasswordHash(unhashed, saltBytes);
+      return (hashValue == expectedHashString);
+    }
     public static bool LoginAttempt(string username, string password)
     {
       SqlConnection conn = DB.Connection();
