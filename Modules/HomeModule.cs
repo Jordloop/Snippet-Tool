@@ -51,6 +51,12 @@ namespace SnippetTool
         model.Add("snippet", SelectedSnippet);
         return View["delete_confirm.cshtml", model];
       };
+      Get["/snippet/{id}/update"] = param => {
+        Dictionary<string, object> model = new Dictionary<string, object>{};
+        Snippet SelectedSnippet = Snippet.Find(param.id);
+        model.Add("snippet", SelectedSnippet);
+        return View["snippet_update.cshtml", model];
+      };
       Get["/snippet/{id}/download"] = param =>
       {
         Snippet selectedSnippet = Snippet.Find(param.id);
