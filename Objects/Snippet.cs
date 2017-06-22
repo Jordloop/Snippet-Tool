@@ -160,27 +160,91 @@ namespace SnippetTool
       return foundSnippet;
     }
 
-//----AddTag()
-    public void AddTag(Tag newTag)
+//----CheckUniqueTag()
+// Before allowing AddTag to run,
+// we need to check if its id already exists in db
+// to prevent duplicates.
+
+
+// Should we make this method a dictionary?
+// Dict<int, bool> = new Dict... etc
+// as we while through the db,
+//   if we match any oldId, store that ID in the int
+//     and then mark bool Yes it matched;  return true;
+//   if it never matches, bool stays false, and int gets marked 0
+//
+// back in AddTag, our if statements will use both the bool and the int
+//
+// if had matched old tag, check for the  tag which is the key that matched any value in the dictionary that was true (shoudl be one)
+// i.e  Key = "8" ; value = true for a match of an old tag
+// if didn't match, we'll just use newTag.Id that we already have.  and never use Dict.
+
+
+    public bool DoNotAddTagIfAlreadyExists(Tag newTag)
     {
       SqlConnection conn = DB.Connection();
       conn.Open();
+      SqlCommand cmd = new SqlCommand("SELECT * FROM tags WHERE text = @newTag;", conn);
+      SqlParameter TagIdParameter = new SqlParameter("@newTag", newTag.Text);
 
-      SqlCommand cmd = new SqlCommand("INSERT INTO join_snippets_tags(id_snippet, id_tag) VALUES (@SnippetId, @TagId)", conn );
+      cmd.Parameters.Add(TagIdParameter);
 
-      SqlParameter TagIdParam = new SqlParameter("@TagId",newTag.Id);
+      SqlDataReader rdr = cmd.ExecuteReader();
+      bool doesItMatch = false;
+        while (rdr.Read())
+        {
+          if(newTag.Id  == rdr.GetInt32(0))
+          {
+            doesItMatch = true;
+          }
+        }
+        if (rdr != null )
+        {
+          rdr.Close();
+        }
+        if (conn != null )
+        {
+          conn.Close();
+        }
+        return doesItMatch;
+      }
 
-      cmd.Parameters.Add(TagIdParam );
+//----AddTag()
+    public void AddTag(Tag newTag)
+    {
+      bool DidTheTagAlreadyExist = DoNotAddTagIfAlreadyExists(newTag);
 
-      SqlParameter SnippetIdParam = new SqlParameter("@SnippetId",this.Id);
+      if (DidTheTagAlreadyExist)
+      {
+        SqlConnection conn = DB.Connection();
+        conn.Open();
+        SqlCommand cmd = new SqlCommand("INSERT INTO join_snippets_tags(id_snippet, id_tag) VALUES (@SnippetId, @TagId)", conn );
+        SqlParameter TagIdParam = new SqlParameter("@TagId",//WHATEVER OLD TAG ID TURNS OUT TO BE);
+        cmd.Parameters.Add(TagIdParam );
+        SqlParameter SnippetIdParam = new SqlParameter("@SnippetId",this.Id);
+        cmd.Parameters.Add(SnippetIdParam );
+        cmd.ExecuteNonQuery();
 
-      cmd.Parameters.Add(SnippetIdParam );
+      }
+      else
+      {
+        SqlConnection conn = DB.Connection();
+        conn.Open();
+        SqlCommand cmd = new SqlCommand("INSERT INTO join_snippets_tags(id_snippet, id_tag) VALUES (@SnippetId, @TagId)", conn );
+        SqlParameter TagIdParam = new SqlParameter("@TagId",newTag.Id);
+        // SqlParameter TagIdParam = new SqlParameter("@TagId",modifiedTagId);
+        cmd.Parameters.Add(TagIdParam );
+        SqlParameter SnippetIdParam = new SqlParameter("@SnippetId",this.Id);
+        cmd.Parameters.Add(SnippetIdParam );
+        cmd.ExecuteNonQuery();
+      }
 
-      cmd.ExecuteNonQuery();
+
       if(conn != null )
       {
         conn.Close();
       }
+
     }
 
 //----GetTags()

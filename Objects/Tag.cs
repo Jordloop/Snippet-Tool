@@ -195,6 +195,43 @@ namespace SnippetTool
       return snippets;
     }
 
+  //GetSnippets()----
+    public static List<Snippet> SearchSnippetsByTag(int searchText)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT snippets.* FROM tags JOIN join_snippets_tags ON (tags.id = join_snippets_tags.id_tag) JOIN snippets ON (snippets.id = join_snippets_tags.id_snippet) WHERE tags.id = @TagId", conn );
+
+      SqlParameter TagIdParam = new SqlParameter("@TagId", searchText);
+
+      cmd.Parameters.Add(TagIdParam);
+
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      List<Snippet> snippets = new List<Snippet>{};
+
+      while(rdr.Read())
+      {
+        int snippetId = rdr.GetInt32(0);
+        string snippetDescription = rdr.GetString(1);
+        string snippetText = rdr.GetString(2);
+        DateTime snippetTime = rdr.GetDateTime(3);
+
+        Snippet newSnippet = new Snippet(snippetDescription, snippetText, snippetTime, snippetId );
+        snippets.Add(newSnippet);
+      }
+      if(rdr != null)
+      {
+        rdr.Close();
+      }
+      if(conn != null)
+      {
+        conn.Close();
+      }
+      return snippets;
+    }
+
 //Update()----
     public void Update(string newText )
     {
