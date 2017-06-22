@@ -6,8 +6,26 @@
 <form action="/user_login" method="post">
   <label for="user-name">Username</label>
   <input type="text" name="user-name">
+  <br><br>
   <label for="user-password">Password</label>
   <input type="password" name="user-password">
-  <button type="submit">Login</button>
+  <br><br>
+  <button id="btn" type="submit">Login</button>
 </form>
-<p><a href="/user_create">Create User</a></p>
+<br>
+<p><a id="linkBox" href="/user_create">Create User</a></p>
+
+<style>
+ #btn {
+   margin-left: 10%;
+ }
+ #linkBox {
+   border: solid gray 1px;
+   padding: 4px;
+   color: black;
+   background-color: #E8E8E8;
+   text-decoration: none;
+   font-family: sans-serif;
+   margin-left: 10%;
+ }
+</style>
