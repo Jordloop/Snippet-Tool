@@ -104,8 +104,10 @@ namespace SnippetTool
       Snippet testSnippet = new Snippet("Some Code", "x = 'Foo'", new DateTime(2017, 6, 19, 12, 55, 00));
       testSnippet.Save();
       string newTest = "y = 'Mii'";
+      DateTime SnippetDateTime = DateTime.Now;
+
       //Act
-      testSnippet.Update(newTest);
+      testSnippet.Update(newTest, SnippetDateTime);
       string result = testSnippet.Text;
       //Assert
       Assert.Equal(newTest, result);

@@ -37,11 +37,6 @@ namespace SnippetTool
         bool loginResult = EndUser.LoginAttempt(Request.Form["user-name"], hash);
         return View["loginsuccess.cshtml", loginResult];
       };
-
-      Get["/homepage"] = _=>
-      {
-        return View["HOMEPAGE"];
-      };
 //ALL SNIPPETS
       Get["/snippet/view"] = _ => {
         List<Snippet> allSnippets = Snippet.GetAll();
@@ -58,7 +53,31 @@ namespace SnippetTool
         model.Add("tag", SnippetTags);
         return View["this_snippet.cshtml", model];
       };
-//DELETE SNIPPET
+
+      //----UPDATE SNUPPET
+
+      Get["/snippet/{id}/update"] = param => {
+        Dictionary<string, object> model = new Dictionary<string, object>{};
+        Snippet SelectedSnippet = Snippet.Find(param.id);
+
+        model.Add("snippet", SelectedSnippet);
+        return View["snippet_update.cshtml", model];
+      };
+      Patch["/snippet/{id}/update"] = param => {
+        Dictionary<string, object> model = new Dictionary<string, object>{};
+        Snippet SelectedSnippet = Snippet.Find(param.id);
+        DateTime SnippetDateTime = DateTime.Now;
+
+        List<Tag> SnippetTags = SelectedSnippet.GetTags();
+
+        SelectedSnippet.Update(Request.Form["snippet-text"], SnippetDateTime);
+
+        model.Add("tag", SnippetTags);
+        model.Add("snippet", SelectedSnippet);
+        return View["this_snippet.cshtml", model];
+      };
+
+//----DELETE SNIPPET
       Get["/snippet/{id}/delete"] = param => {
         Dictionary<string, object> model = new Dictionary<string, object>{};
         Snippet SelectedSnippet = Snippet.Find(param.id);
@@ -73,26 +92,8 @@ namespace SnippetTool
         selectedSnippet.Delete();
         return View["action_success.cshtml"];
       };
-//UPDATE SNUPPET
-      Get["/snippet/{id}/update"] = param => {
-        Dictionary<string, object> model = new Dictionary<string, object>{};
-        Snippet SelectedSnippet = Snippet.Find(param.id);
+//----DOWNLOAD SNIPPET
 
-        model.Add("snippet", SelectedSnippet);
-        return View["snippet_update.cshtml", model];
-      };
-      Patch["/snippet/{id}/update"] = param => {
-        Dictionary<string, object> model = new Dictionary<string, object>{};
-        Snippet SelectedSnippet = Snippet.Find(param.id);
-        List<Tag> SnippetTags = SelectedSnippet.GetTags();
-
-        SelectedSnippet.Update(Request.Form["snippet-text"]);
-
-        model.Add("tag", SnippetTags);
-        model.Add("snippet", SelectedSnippet);
-        return View["this_snippet.cshtml", model];
-      };
-//DOWNLOAD SNIPPET
       Get["/snippet/{id}/download"] = param =>
       {
         Snippet selectedSnippet = Snippet.Find(param.id);
@@ -124,7 +125,8 @@ namespace SnippetTool
         return View["snippet_create.cshtml"];
       };
       Post["/snippet/create"] = _ => {
-        Snippet newSnippet = new Snippet(Request.Form["snippet-description"], Request.Form["snippet-text"], new DateTime(2000, 1, 1, 12, 00, 00));
+        DateTime snippetDateTime = DateTime.Now;
+        Snippet newSnippet = new Snippet(Request.Form["snippet-description"], Request.Form["snippet-text"], snippetDateTime);
 
         newSnippet.Save();
         List<Snippet> allSnippets = Snippet.GetAll();

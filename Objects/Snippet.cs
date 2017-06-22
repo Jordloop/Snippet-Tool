@@ -55,7 +55,7 @@ namespace SnippetTool
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("SELECT * FROM snippets;", conn );
+      SqlCommand cmd = new SqlCommand("SELECT * FROM snippets ORDER BY time DESC;", conn );
       SqlDataReader rdr = cmd.ExecuteReader();
 
       while(rdr.Read())
@@ -127,7 +127,7 @@ namespace SnippetTool
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("SELECT * FROM snippets WHERE id = @SnippetId;", conn );
+      SqlCommand cmd = new SqlCommand("SELECT * FROM snippets WHERE id = @SnippetId", conn );
 
       SqlParameter SnippetIdParameter = new SqlParameter("@SnippetId", id.ToString());
 
@@ -216,16 +216,20 @@ namespace SnippetTool
       return tags;
     }
 //----Update()
-public void Update(string newText )
+public void Update(string newText, DateTime newTime )
 {
   SqlConnection conn = DB.Connection();
   conn.Open();
 
-  SqlCommand cmd = new SqlCommand("UPDATE snippets SET text = @NewText OUTPUT INSERTED.text WHERE id = @SnippetId;", conn);
+  SqlCommand cmd = new SqlCommand("UPDATE snippets SET text = @NewText, time = @NewTime OUTPUT INSERTED.text, INSERTED.time WHERE id = @SnippetId;", conn);
 
   SqlParameter newTextParameter = new SqlParameter("@NewText", newText);
 
   cmd.Parameters.Add(newTextParameter );
+
+  SqlParameter newTimeParameter = new SqlParameter("@NewTime", newTime);
+
+  cmd.Parameters.Add(newTimeParameter );
 
   SqlParameter snippetIdParameter = new SqlParameter("@SnippetId", this.Id);
 
@@ -236,6 +240,7 @@ public void Update(string newText )
   while(rdr.Read())
   {
     this.Text = rdr.GetString(0);
+    this.Time = rdr.GetDateTime(1);
   }
   if(rdr != null )
   {
