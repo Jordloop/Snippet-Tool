@@ -1,0 +1,7 @@
+  public string Test()
+{
+    string x = "Foo";
+    string y = "Bar";
+
+    return x+y;
+}

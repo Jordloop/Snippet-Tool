@@ -12,7 +12,7 @@
 
 <form action='/snippet/@Model["snippet"].Id/add_tag' method="post">
   <label for="tag-text">Tag: </label>
-  <input name="tag-text" type="text" required>
+  <input name="tag-text" type="text" required autofocus>
   <button type="submit">Add Tag</button>
 </form>
 
@@ -20,8 +20,7 @@
 @Model["snippet"].Text;
 </pre>
 
-<form action="http://localhost:5004/snippet/@Model["snippet"].Id/delete">
-    <input type="submit" value="Delete">
-</form>
-<a href="/snippet/@Model["snippet"].Id/download">Download Snippet</a>
-<a href="/snippet/@Model["snippet"].Id/delete">Delete</a>
+
+<a href ="/snippet/@Model["snippet"].Id/update">Update Snippet</a><br>
+<a href="/snippet/@Model["snippet"].Id/download">Download Snippet</a><br>
+<a href ="/snippet/@Model["snippet"].Id/delete">Delete Snippet</a>

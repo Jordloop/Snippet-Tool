@@ -4,13 +4,29 @@
     <meta charset="utf-8">
     <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css'>
     <link rel="stylesheet" href="../../Content/css/styles.css" type="text/css">
+    <script href="../../Content/js/jquery-3.2.1.js"></script>
+    <script href="../../Content/js/bootstrap.js"></script>
     <title>Code Snippeteria</title>
   </head>
   <body>
-    <a href = "/search/tags">Search by Tags</a>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
 
-    <a href = "/search/snippets">Search by Snippets</a>
+          <a class="navbar-brand" href="#">Snippeteria</a>
+        </div>
 
-    @RenderBody()
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li><a href="/snippet/create">Add Snippet</a></li>
+            <li><a href="/snippet/view">View Snippets</a></li>
+            <li><a href="/search/snippets">Search Snippets</a></li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+    <div class="container">
+      @RenderBody()
+    </div>
   </body>
-</html>
+  </html>

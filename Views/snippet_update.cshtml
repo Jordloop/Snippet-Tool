@@ -1,3 +1,11 @@
 @{
   Layout="Shared/_Layout";
 }
+<form action='/snippet/@Model["snippet"].Id/update' method="post">
+  <input type="hidden" name="_method" value="PATCH">
+  <label for="snippet-text">Updated Code:</label>
+  <textarea name="snippet-text" type="text" required rows="10" cols="80">@Model["snippet"].Text
+  </textarea><br>
+
+  <button type="submit">Update Snippet</button>
+</form>
