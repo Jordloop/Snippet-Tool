@@ -124,7 +124,8 @@ namespace SnippetTool
         return View["snippet_create.cshtml"];
       };
       Post["/snippet/create"] = _ => {
-        Snippet newSnippet = new Snippet(Request.Form["snippet-description"], Request.Form["snippet-text"], new DateTime(2000, 1, 1, 12, 00, 00));
+        DateTime snippetDateTime = DateTime.Now;
+        Snippet newSnippet = new Snippet(Request.Form["snippet-description"], Request.Form["snippet-text"], snippetDateTime);
 
         newSnippet.Save();
         List<Snippet> allSnippets = Snippet.GetAll();

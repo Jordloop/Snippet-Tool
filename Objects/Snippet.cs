@@ -55,7 +55,7 @@ namespace SnippetTool
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("SELECT * FROM snippets;", conn );
+      SqlCommand cmd = new SqlCommand("SELECT * FROM snippets ORDER BY time DESC;", conn );
       SqlDataReader rdr = cmd.ExecuteReader();
 
       while(rdr.Read())
@@ -127,7 +127,7 @@ namespace SnippetTool
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("SELECT * FROM snippets WHERE id = @SnippetId;", conn );
+      SqlCommand cmd = new SqlCommand("SELECT * FROM snippets WHERE id = @SnippetId", conn );
 
       SqlParameter SnippetIdParameter = new SqlParameter("@SnippetId", id.ToString());
 

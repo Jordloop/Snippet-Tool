@@ -3,10 +3,10 @@
 }
 <form action="/snippet/create" method="post">
   <label for="snippet-text">Code:</label>
-  <textarea name="snippet-text" type="text" required rows="10" cols="80">
+  <textarea name="snippet-text" type="text" required rows="10" cols="80" required>
   </textarea>
   <br><label for="snippet-description">Description</label>
-  <input name="snippet-description" type="text">
+  <input name="snippet-description" type="text" required>
 
   <button type="submit">Add Snippet</button>
 </form>
