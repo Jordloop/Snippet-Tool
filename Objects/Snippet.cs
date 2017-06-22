@@ -80,12 +80,13 @@ namespace SnippetTool
       return allSnippets;
     }
 //----ConvertSnippetText()
-    public string ConvertSnippetText(string userInput)
-    {
-      // Console.WriteLine(userInput);
-      string userInputConverted = userInput.Replace("33", "44");
-      return userInputConverted;
-    }
+
+    // public string ConvertSnippetText(string userInput)
+    // {
+    //   // Console.WriteLine(userInput);
+    //   string userInputConverted = userInput.Replace("33", "44");
+    //   return userInputConverted;
+    // }
 //----Save()
     public void Save()
     {

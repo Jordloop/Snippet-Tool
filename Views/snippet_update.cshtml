@@ -1,16 +1,11 @@
 @{
   Layout="Shared/_Layout";
 }
-<form action="/snippet/create" method="post">
-  <label for="snippet-text">Code:</label>
-  <textarea name="snippet-text" type="text" required rows="10" cols="80" placeholder="@Model["snippet"].Text">@Model["snippet"].Text
-  </textarea>
-  <br><label for="snippet-description">Description</label>
-  <input name="snippet-description" type="text">
+<form action='/snippet/@Model["snippet"].Id/update' method="post">
+  <input type="hidden" name="_method" value="PATCH">
+  <label for="snippet-text">Updated Code:</label>
+  <textarea name="snippet-text" type="text" required rows="10" cols="80">@Model["snippet"].Text
+  </textarea><br>
 
-@* <input type="hidden" name="_method" value="PATCH"> *@
-
-  @* <label for="snippet-time">Time</label>
-  <input name="snippet-time" type="datetime"> *@
-  <button type="submit">Add snippet</button>
+  <button type="submit">Update Snippet</button>
 </form>
