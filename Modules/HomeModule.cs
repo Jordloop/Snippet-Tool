@@ -167,10 +167,6 @@ namespace SnippetTool
         return View["search_tag.cshtml", model];
       };
 
-
-        return View["search_tag.cshtml", model];
-      };
-
     }
   }
 }

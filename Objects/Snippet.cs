@@ -180,54 +180,54 @@ namespace SnippetTool
 // if didn't match, we'll just use newTag.Id that we already have.  and never use Dict.
 
 
-    public bool DoNotAddTagIfAlreadyExists(Tag newTag)
-    {
-      SqlConnection conn = DB.Connection();
-      conn.Open();
-      SqlCommand cmd = new SqlCommand("SELECT * FROM tags WHERE text = @newTag;", conn);
-      SqlParameter TagIdParameter = new SqlParameter("@newTag", newTag.Text);
-
-      cmd.Parameters.Add(TagIdParameter);
-
-      SqlDataReader rdr = cmd.ExecuteReader();
-      bool doesItMatch = false;
-        while (rdr.Read())
-        {
-          if(newTag.Id  == rdr.GetInt32(0))
-          {
-            doesItMatch = true;
-          }
-        }
-        if (rdr != null )
-        {
-          rdr.Close();
-        }
-        if (conn != null )
-        {
-          conn.Close();
-        }
-        return doesItMatch;
-      }
+    // public bool DoNotAddTagIfAlreadyExists(Tag newTag)
+    // {
+    //   SqlConnection conn = DB.Connection();
+    //   conn.Open();
+    //   SqlCommand cmd = new SqlCommand("SELECT * FROM tags WHERE text = @newTag;", conn);
+    //   SqlParameter TagIdParameter = new SqlParameter("@newTag", newTag.Text);
+    //
+    //   cmd.Parameters.Add(TagIdParameter);
+    //
+    //   SqlDataReader rdr = cmd.ExecuteReader();
+    //   bool doesItMatch = false;
+    //     while (rdr.Read())
+    //     {
+    //       if(newTag.Id  == rdr.GetInt32(0))
+    //       {
+    //         doesItMatch = true;
+    //       }
+    //     }
+    //     if (rdr != null )
+    //     {
+    //       rdr.Close();
+    //     }
+    //     if (conn != null )
+    //     {
+    //       conn.Close();
+    //     }
+    //     return doesItMatch;
+    //   }
 
 //----AddTag()
     public void AddTag(Tag newTag)
     {
-      bool DidTheTagAlreadyExist = DoNotAddTagIfAlreadyExists(newTag);
+      // bool DidTheTagAlreadyExist = DoNotAddTagIfAlreadyExists(newTag);
 
-      if (DidTheTagAlreadyExist)
-      {
-        SqlConnection conn = DB.Connection();
-        conn.Open();
-        SqlCommand cmd = new SqlCommand("INSERT INTO join_snippets_tags(id_snippet, id_tag) VALUES (@SnippetId, @TagId)", conn );
-        SqlParameter TagIdParam = new SqlParameter("@TagId",//WHATEVER OLD TAG ID TURNS OUT TO BE);
-        cmd.Parameters.Add(TagIdParam );
-        SqlParameter SnippetIdParam = new SqlParameter("@SnippetId",this.Id);
-        cmd.Parameters.Add(SnippetIdParam );
-        cmd.ExecuteNonQuery();
-
-      }
-      else
-      {
+      // if (DidTheTagAlreadyExist)
+      // {
+      //   SqlConnection conn = DB.Connection();
+      //   conn.Open();
+      //   SqlCommand cmd = new SqlCommand("INSERT INTO join_snippets_tags(id_snippet, id_tag) VALUES (@SnippetId, @TagId)", conn );
+      //   SqlParameter TagIdParam = new SqlParameter("@TagId",//WHATEVER OLD TAG ID TURNS OUT TO BE);
+      //   cmd.Parameters.Add(TagIdParam );
+      //   SqlParameter SnippetIdParam = new SqlParameter("@SnippetId",this.Id);
+      //   cmd.Parameters.Add(SnippetIdParam );
+      //   cmd.ExecuteNonQuery();
+      //
+      // }
+      // else
+      // {
         SqlConnection conn = DB.Connection();
         conn.Open();
         SqlCommand cmd = new SqlCommand("INSERT INTO join_snippets_tags(id_snippet, id_tag) VALUES (@SnippetId, @TagId)", conn );
@@ -237,7 +237,7 @@ namespace SnippetTool
         SqlParameter SnippetIdParam = new SqlParameter("@SnippetId",this.Id);
         cmd.Parameters.Add(SnippetIdParam );
         cmd.ExecuteNonQuery();
-      }
+      
 
 
       if(conn != null )
