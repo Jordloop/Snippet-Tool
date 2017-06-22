@@ -1,13 +1,15 @@
 @{
   Layout="Shared/_Layout";
 }
-
+<h4>Search Snippets</h4>
+<hr />
 <form action="/search/snippets" method="post">
-  <label for="search-string">String</label>
-  <input type="text" name="search-string">String to search snippet by</input>
+  <label for="search-string">Keyword: </label>
+  <input type="text" name="search-string">
   <button type="submit">Search!</button>
 </form>
-
+<hr />
+<h4>Results: </h4>
 @if (@Model.Count != 0) {
   <ul>
   @foreach (var snippet in Model) {

@@ -1,7 +1,6 @@
-  public string Test()
+  function foo()
 {
-    string x = "Foo";
-    string y = "Bar";
+    code stuff
 
-    return x+y;
 }
+  

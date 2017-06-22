@@ -53,7 +53,9 @@ namespace SnippetTool
         model.Add("tag", SnippetTags);
         return View["this_snippet.cshtml", model];
       };
+
       //----UPDATE SNUPPET
+
       Get["/snippet/{id}/update"] = param => {
         Dictionary<string, object> model = new Dictionary<string, object>{};
         Snippet SelectedSnippet = Snippet.Find(param.id);
@@ -74,6 +76,7 @@ namespace SnippetTool
         model.Add("snippet", SelectedSnippet);
         return View["this_snippet.cshtml", model];
       };
+
 //----DELETE SNIPPET
       Get["/snippet/{id}/delete"] = param => {
         Dictionary<string, object> model = new Dictionary<string, object>{};
@@ -90,6 +93,7 @@ namespace SnippetTool
         return View["action_success.cshtml"];
       };
 //----DOWNLOAD SNIPPET
+
       Get["/snippet/{id}/download"] = param =>
       {
         Snippet selectedSnippet = Snippet.Find(param.id);
@@ -100,7 +104,7 @@ namespace SnippetTool
         }
         return View["action_success.cshtml"];
       };
-//----ADD TAG TO SNIPPET
+//ADD TAG TO SNIPPET
       Post["/snippet/{id}/add_tag"] = param => {
         Dictionary<string, object> model = new Dictionary<string, object>{};
         Snippet SelectedSnippet = Snippet.Find(param.id);

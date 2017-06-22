@@ -1,14 +1,30 @@
 @{
-  Layout="Shared/_Layout";
+  Layout="Shared/_SecureLayout";
 }
-<h1>User Login</h1>
+<h2>User Login</h2>
 <hr />
 @if(@Model == true)
 {
-  <p>Login Sucess</p>
+
+  <h4 id="success">Success</h4>
+  <br>
+  <p><a id="linkBox" href="/snippet/view">View Snippets</a></p>
 }
 else
 {
   <p>Login Failed</p>
+  <p><a href="/">Return to login</a></p>
 }
-<p><a href="/">Return to login</a></p>
+<style>
+ #linkBox {
+   border: solid gray 1px;
+   padding: 4px;
+   color: black;
+   background-color: #E8E8E8;
+   text-decoration: none;
+   font-family: sans-serif;
+ }
+ #success {
+   color: green;
+ }
+</style>
