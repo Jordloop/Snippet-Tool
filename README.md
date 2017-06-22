@@ -11,9 +11,9 @@
 * The user will be able to log in with a username and password.
 * The user will be able to enter code into a text entry box.
 * The user will be able to assign tags to any snippet of code.
-* The user will be able to search for code matching any specified, previously entered tag.
 * The user will be able to search for code containing any string of text.
 * The user will be able to view all saved snippets.
+* The user will be able to delete a snippet.
 
 
 
@@ -24,10 +24,13 @@
 | User enters text data into a text box | User clicks Save | Message displays "Code [N] saved to database." |
 | User enters text data and a tag into two text boxes | User clicks Save | Message displays "Code [N] and tag [J] saved to database." |
 | User enters text data and tags | User clicks Save | Data saved with code text, tag, and timestamp |
-| User enters text data and tags | User clicks Save | Image of code text is saved |
-
-| User searches for code matching a tag ("N") from a dropdown list of all tags | Dropdown tag chosen, user clicks "Find Tag" | All code snippets matching tag "N" are displayed |
 | User searches for code matching entered text | User types "xyz" and clicks "Find Text" | All code snippets matching "xyz" are displayed |
+| User updates a snippet | Click update button | Original snippet is editable |
+| User updates a snippet | User clicks update after editing | Success page is returned |
+| User deletes a snippet | Click delete button | Snippet is deleted |
+| User can create a new user | Click create user | Form is displayed to enter username/pw |
+| User can create a new user | Confirm user creation | Password is store securely in db |
+| User can log in with secure credentials | Click login | User now has access to features |
 
 
 ## Setup/Installation Requirements
@@ -105,4 +108,4 @@ If you have any issues or have questions, ideas, concerns, or contributions plea
 ### License
 This software is licensed under the MIT license.
 
-Copyright (c) 2017 Adrian Agnic, John Dowd, Andrew Glines, Jordan Loop, Epicodus#
+Copyright (c) 2017 Adrian Agnic, John Dowd, Andrew Glines, Jordan Loop, Epicodus
